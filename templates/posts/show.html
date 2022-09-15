@@ -1,37 +1,99 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block content %}
 
-{% block content %}
+<div class="bg"></div>
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <ul class="list-group no-hover" id="messages">
+      <li class="list-group-item">
+        <a href="/posts/{{ post.id }}" class="message-link"></a>
+        <a href="/users/{{ post.user.id }}">
+          <img src="{{ post.user.image_url }}" alt="" class="timeline-image" />
+        </a>
+        <div class="message-area">
+          <a href="/users/{{ post.user.id }}">@{{ post.user.username }}</a>
+          <span class="text-muted"
+            ><small>{{ post.created_at.strftime('%d %B %Y') }}</small></span
+          >
 
-  <div class="bg"></div>
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <ul class="list-group no-hover" id="messages">
-        <li class="list-group-item">
-          <a href="{{ url_for('users_show', user_id=post.user.id) }}">
-            <img src="{{ post.user.image_url }}" alt="" class="timeline-image">
-          </a>
-          <div class="message-area">
-            <div class="message-heading">
-              <a href="/users/{{ post.user.id }}">@{{ post.user.username }}</a>
-              {% if g.user %}
-                {% if g.user.id == post.user.id %}
-                  <form method="POST"
-                        action="/posts/{{ post.id }}/delete">
-                    <button class="btn btn-outline-danger">Delete</button>
-                  </form>
-                {% endif %}
-              {% endif %}
-            </div>
-            <image style='height:100px; width:100px' src='{{post.image_url}}'></image>
-            <p class="single-message">{{ post.title }}</p>
-            <p class="single-message">{{ post.description }}</p>
-            <p class="single-message">{{ post.movie.title }}</p>
-            <p class="single-message">{{ post.location_id }}</p>
-            <span class="text-muted">{{ post.created_at.strftime('%d %B %Y') }}</span>
+          <h5>{{ post.title }}</h5>
+          <hr />
+          <h6>
+            <span class="text-muted"><em>Description</em></span>
+          </h6>
+          <p>{{ post.description }}</p>
+
+          <div>
+            <image
+              style="height: 100%; width: 100%"
+              src="{{post.image_url}}"
+            ></image>
+            <p class="my-1">
+              <span class="text-muted"><em>Movie:</em></span>
+              <span>{{ post.movie.title}}</span>
+              <span class="mx-3">
+                <span class="text-muted"><em>Location:</em></span>
+                <span>{{ post.location.city }}, {{ post.location.state }}</span>
+              </span>
+            </p>
           </div>
-        </li>
-      </ul>
-    </div>
+        </div>
+        {% if post.user_id != g.user.id%}
+        <form
+          method="POST"
+          action="/users/add_like/{{ post.id }}"
+          id="messages-form"
+          class="messages-form"
+          data-id="{{ post.id }}"
+        >
+          <button
+            type="submit"
+            class="
+              btn 
+              btn-sm 
+              {{'btn-primary' if post.id in likes else 'btn-secondary'}}"
+          >
+            <i class="fa fa-thumbs-up"></i>
+          </button>
+        </form>
+        {% endif %}
+      </li>
+    </ul>
   </div>
+</div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  // handles like/unlike of a post
 
+  async function processForm(evt) {
+    evt.preventDefault();
+    let postID = $(this).attr("data-id");
+
+    const resp = await axios({
+      method: "POST",
+      url: `/users/add_like/${postID}`,
+    });
+    if ($(this).children("button").hasClass("btn-primary")) {
+      $(this).children("button").removeClass("btn-primary");
+      $(this).children("button").addClass("btn-secondary");
+    } else {
+      $(this).children("button").removeClass("btn-secondary");
+      $(this).children("button").addClass("btn-primary");
+    }
+  }
+
+  $(".messages-form").on("submit", processForm);
+
+  // reloads the page when using browser back button
+
+  window.addEventListener("pageshow", function (event) {
+    var historyTraversal =
+      event.persisted ||
+      (typeof window.performance != "undefined" &&
+        window.performance.navigation.type === 2);
+    if (historyTraversal) {
+      // Handle page restore.
+      window.location.reload();
+    }
+  });
+</script>
 {% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="row justify-content-center">
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <img
+        src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}"
+        alt="Card image cap"
+      />
+      <h1 class="display-4">{{movie.title}}</h1>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <div id="posts-list" class="row card-deck">
+      {% for post in movie.posts %}
+      <div class="col-12">
+        <div class="card">
+          <img
+            class="card-img-top"
+            src="{{post.image_url}}"
+            alt="Card image cap"
+          />
+          <div class="card-body">
+            <h5 class="card-title">{{post.title}}</h5>
+            <p class="card-text">{{post.created_at}}</p>
+            <p class="card-text">
+              {{post.location.city}}, {{post.location.state}}
+            </p>
+            <a class="btn btn-sm btn-primary" href="/posts/{{post.id}}"
+              >Go Location</a
+            >
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div id="movie-list" class="row card-deck"></div>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+{% endblock %}

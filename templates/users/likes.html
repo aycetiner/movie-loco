@@ -1,35 +1,83 @@
-{% extends 'users/detail.html' %}
+{% extends 'users/detail.html' %} {% block user_details %}
 
-{% block user_details %}
+<div class="col-lg-6 col-md-8 col-sm-12">
+  <ul class="list-group" id="messages">
+    {% for post in user.likes %}
 
-
-  <div class="col-lg-6 col-md-8 col-sm-12">
-    <ul class="list-group" id="messages">
-      {% for post in user.likes %}
-      
-        <li class="list-group-item">
-          <a href="/messages/{{ post.id }}" class="message-link"></a>
-          <a href="/users/{{ post.user.id }}">
-            <img src="{{ post.user.image_url }}" alt="" class="timeline-image">
-          </a>
-          <div class="message-area">
-            <a href="/users/{{ post.user.id }}">@{{ post.user.username }}</a>
-            <span class="text-muted">{{ post.created_at.strftime('%d %B %Y') }}</span>
-            <p>{{ post.text }}</p>
-          </div>
-          <form method="POST" action="/users/add_like/{{ post.id }}" id="messages-form">
-              <button type="submit" class="
+    <li class="list-group-item">
+      <a href="/posts/{{ post.id }}" class="message-link"></a>
+      <a href="/users/{{ post.user.id }}">
+        <img src="{{ post.user.image_url }}" alt="" class="timeline-image" />
+      </a>
+      <div class="message-area">
+        <a href="/users/{{ post.user.id }}">@{{ post.user.username }}</a>
+        <span class="text-muted"
+          >{{ post.created_at.strftime('%d %B %Y') }}</span
+        >
+        <p>{{ post.title }}</p>
+        <img
+          style="height: 100px; width: 100px"
+          src="{{post.image_url}}"
+          alt="post_pic"
+        />
+      </div>
+      <form
+        method="POST"
+        action="/users/add_like/{{ post.id }}"
+        id="messages-form"
+        class="messages-form"
+        data-id="{{ post.id }}"
+      >
+        <button
+          type="submit"
+          class="
               btn 
               btn-sm 
               {{'btn-primary' if post.id in likes else 'btn-secondary'}}"
-            >
-              <i class="fa fa-thumbs-up"></i> 
-            </button>
-          </form>
-        </li>
-      
-      {% endfor %}
-    </ul>
-  </div>
+        >
+          <i class="fa fa-thumbs-up"></i>
+        </button>
+      </form>
+    </li>
+
+    {% endfor %}
+  </ul>
+</div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  // handles like/unlike of a post
+
+  async function processForm(evt) {
+    evt.preventDefault();
+    let postID = $(this).attr("data-id");
+
+    const resp = await axios({
+      method: "POST",
+      url: `/users/add_like/${postID}`,
+    });
+    if ($(this).children("button").hasClass("btn-primary")) {
+      $(this).children("button").removeClass("btn-primary");
+      $(this).children("button").addClass("btn-secondary");
+    } else {
+      $(this).children("button").removeClass("btn-secondary");
+      $(this).children("button").addClass("btn-primary");
+    }
+  }
+
+  $(".messages-form").on("submit", processForm);
+
+  // reloads the page when using browser back button
+
+  window.addEventListener("pageshow", function (event) {
+    var historyTraversal =
+      event.persisted ||
+      (typeof window.performance != "undefined" &&
+        window.performance.navigation.type === 2);
+    if (historyTraversal) {
+      // Handle page restore.
+      window.location.reload();
+    }
+  });
+</script>
 
 {% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      
+      <form id='movie-search-form-2' method="POST">
+
+        <input id='movie-name' type="text"> </input>
+
+        <button type="Submit" class="btn btn-outline-success btn-block">Search</button>
+        
+        </form>
+
+        <div id='movie-list' class="row card-deck">
+        
+        {% for movie in movies %}
+        <div class="col-3">
+          <div class="card">
+          <img class="card-img-top" src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}" alt="Card image cap">
+          <div class="card-body">
+          <h5 class="card-title">{{movie.title}}</h5>
+          <p class="card-text">{{movie.release_date}}</p>
+          <a class='btn btn-sm btn-primary' href='/movies/{{movie.id}}'>Go Movie Posts</a>
+          </div>  
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+        
+
+    </div>
+  </div>
+
+  <div id='movie-list' class="row card-deck">
+  </div>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="/static/movie-search-local.js"></script>
+{% endblock %}

@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, flash, redirect, session, g
+from flask import Flask, render_template, request, flash, redirect, session, g, jsonify
 import requests
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
@@ -182,7 +182,9 @@ def users_likes(user_id):
     """Show list of followers of this user."""
 
     user = User.query.get_or_404(user_id)
-    return render_template('users/likes.html', user=user)
+    likes = [like.id for like in g.user.likes]
+
+    return render_template('users/likes.html', user=user, likes=likes)
 
 
 
@@ -314,6 +316,7 @@ def choose_movie():
 
 
 
+
 @app.route('/posts/new/<int:movie_id>', methods=["GET", "POST"])
 @check_auth
 def posts_add(movie_id):
@@ -375,9 +378,9 @@ def posts_add(movie_id):
 @check_auth
 def posts_show(post_id):
     """Show a post."""
-
+    likes = [like.id for like in g.user.likes]
     post = Post.query.get(post_id)
-    return render_template('posts/show.html', post=post)
+    return render_template('posts/show.html', post=post, likes=likes)
 
 
 @app.route('/posts/<int:post_id>/delete', methods=["POST"])
@@ -422,6 +425,33 @@ def homepage():
     else:
         return render_template('home-anon.html')
 
+@app.route('/movies', methods=["GET", "POST"])
+# @check_auth
+def list_movies():
+    """Choose the movie to add post for:
+    """
+
+    movies = Movie.query.limit(10)
+    return render_template('movies.html', movies=movies)
+
+@app.route('/api/get_movies')
+# @check_auth
+def api_get_movies():
+    """Choose the movie to add post for:
+    """
+    word = request.args["movie"]
+    movies = Movie.query.filter(Movie.title.ilike(f'%{word}%')).limit(20)
+    serialized = [i.serialize() for i in movies]
+    return jsonify(movies=serialized)
+
+@app.route('/movies/<int:movie_id>', methods=["GET", "POST"])
+@check_auth
+def show_movie(movie_id):
+    """Choose the movie to add post for:
+    """
+    movie = Movie.query.get_or_404(movie_id)
+    
+    return render_template('movie-locations.html', movie=movie)
 
 ##############################################################################
 # Turning off all caching in Flask

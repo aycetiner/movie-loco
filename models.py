@@ -29,7 +29,6 @@ class Likes(db.Model):
     post_id = db.Column(
         db.Integer,
         db.ForeignKey('posts.id', ondelete='cascade'),
-        unique=True
     )
 
 
@@ -186,8 +185,8 @@ class Post(db.Model):
     )
 
     user = db.relationship('User')
-    location = db.relationship('Location')
-    movie = db.relationship('Movie')
+    location = db.relationship('Location', backref='posts')
+    movie = db.relationship('Movie', backref='posts')
 
 
 class Location(db.Model):
@@ -260,6 +259,17 @@ class Movie(db.Model):
         db.String,
         nullable=False
     )
+    
+    def serialize(self):
+        return {
+            "id":self.id,
+            "popularity": self.popularity,
+            "poster_path": self.poster_path,
+            "release_date": self.release_date,
+            "title": self.title
+        }
+
+
 
 def connect_db(app):
     db.app = app
