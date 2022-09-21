@@ -16,9 +16,9 @@ To get this application running, make sure you do the following in the Terminal:
 
 ## Summary
 
-This app is a Mock Spotify which allows users to add "Songs" and create "Playlists". The app has "Songs", "Playlist" and "PlaylistSong" tables. You can interact with other playlists and songs. To see more:
+The movie locations app is serving people to find the locations where their favorite movies were shot! Users can post new movie-locations to contribute to this social platform.
 
-<insert app link here>
+<!-- insert app link here -->
 
 ## Built With
 
@@ -33,7 +33,27 @@ Built with Flask WTForms and SQL Alchemy additon to Python + Flask.
 
 ## License
 
-[![MIT License][license-img]](https://github.com/aycetiner/database-dj/blob/main/LICENSE)
+MIT License
+
+Copyright (c) 2022 Ali Cetiner
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
