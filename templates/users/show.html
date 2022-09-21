@@ -1,29 +1,65 @@
-{% extends 'users/detail.html' %}
-{% block user_details %}
-  <div class="col-sm-6">
-    <ul class="list-group" id="messages">
+{% extends 'users/detail.html' %} {% block user_details %}
+<div
+  id="messages"
+  class="col-lg-6 col-md-8 col-sm-12 card-deck justify-content-center"
+>
+  {% for post in posts %}
+  <div class="col-2 justify-content-center">
+    <div class="card p-2 postCard">
+      <a href="/posts/{{ post.id }}" class="message-link"></a>
+      <div class="card-top my-1">
+        <a href="/users/{{ post.user.id }}" id="ppa">
+          <img src="{{ post.user.image_url }}" alt="" class="timeline-image" />
+        </a>
+        <a href="/users/{{ post.user.id }}">{{ post.user.username }}</a>
+        <span class="text-muted"
+          ><small>{{ post.created_at.strftime('%d %B %Y') }}</small></span
+        >
+      </div>
 
-      {% for post in posts %}
+      <image
+        class="card-img-top rounded border-0"
+        src="{{post.image_url}}"
+      ></image>
 
-        <li class="list-group-item">
-          <a href="/posts/{{ post.id }}" class="message-link"></a>
-          <a href="/users/{{ user.id }}">
-            <img src="{{ user.image_url }}" alt="user image" class="timeline-image">
-          </a>
-
-          <div class="message-area">
-            <a href="/users/{{ user.id }}">@{{ user.username }}</a>
-            <span class="text-muted">{{ post.created_at.strftime('%d %B %Y') }}</span>
-            <image style='height:100px; width:100px' src='{{post.image_url}}'></image>
-            <p>{{ post.title }}</p>
-            <p>{{ post.description }}</p>
-            <p>{{ post.location_id }}</p>
-            <p>{{ post.movie_id}}</p>
-          </div>
-        </li>
-
-      {% endfor %}
-
-    </ul>
+      <div class="card-body">
+        <h5 class="card-title">{{post.title}}</h5>
+      </div>
+      <div class="card-body">
+        <p class="my-1">
+          <span class="text-muted"><em>Movie:</em></span>
+          <span
+            ><a href="/movies/{{post.movie.id}}">{{ post.movie.title}}</a></span
+          >
+        </p>
+        <p>
+          <span class="text-muted"><em>Location:</em></span>
+          <span>{{ post.location.city }}, {{ post.location.state }}</span>
+        </p>
+      </div>
+      {% if post.user_id != g.user.id%}
+      <form
+        method="POST"
+        action=""
+        id="messages-form"
+        class="messages-form"
+        data-id="{{ post.id }}"
+      >
+        <button
+          type="submit"
+          class="
+          btn 
+          btn-sm 
+          {{'btn-primary' if post.id in likes else 'btn-secondary'}}"
+        >
+          <i class="fa fa-thumbs-up"></i>
+        </button>
+      </form>
+      {% endif %}
+    </div>
   </div>
+  {% endfor %}
+</div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/static/handle-like.js"></script>
 {% endblock %}

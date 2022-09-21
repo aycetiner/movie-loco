@@ -8,6 +8,7 @@ from sqlalchemy.exc import IntegrityError
 
 from forms import PostForm, UserAddForm, LoginForm, ProfileEditForm, ChangePasswordForm
 from models import db, connect_db, User, Post, Likes, Location, Movie
+from flask_admin import Admin
 
 MovieAPIKey='6461108259d95817ace0a23e57345c98'
 GoogleAPIKey = 'AIzaSyCp1jKqmi89h2mhNsKtSZYK3-IT3xEq8go'
@@ -28,6 +29,7 @@ app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+# app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
@@ -164,6 +166,7 @@ def users_show(user_id):
     """Show user profile."""
         
     user = User.query.get_or_404(user_id)
+    likes = [like.id for like in g.user.likes]
 
     # snagging messages in order from the database;
     # user.messages won't be in order by default
@@ -173,7 +176,7 @@ def users_show(user_id):
                 .order_by(Post.created_at.desc())
                 .limit(100)
                 .all())
-    return render_template('users/show.html', user=user, posts=posts)
+    return render_template('users/show.html', user=user, posts=posts, likes=likes)
 
 
 @app.route('/users/<int:user_id>/likes')
@@ -297,24 +300,12 @@ def like_post(post_id):
 
 ##############################################################################
 # Posts routes:
-@app.route('/posts/movie_search', methods=["GET", "POST"])
+@app.route('/posts/movie_search', methods=["GET"])
 @check_auth
 def choose_movie():
-    """Choose the movie to add post for:
-    """
-
-    # form = PostForm()
-
-    # if form.validate_on_submit():
-    #     post = Post(title=form.title.data, description=form.description.data, image_url=form.image_url.data, location_id=form.location_id.data, movie_id=form.movie_id.data)
-    #     g.user.posts.append(post)
-    #     db.session.commit()
-
-    #     return redirect(f"/users/{g.user.id}")
+    """Choose the movie to add post for"""
 
     return render_template('posts/movie_search.html')
-
-
 
 
 @app.route('/posts/new/<int:movie_id>', methods=["GET", "POST"])
@@ -423,7 +414,12 @@ def homepage():
         return render_template('home.html', posts=posts, likes=likes)
 
     else:
-        return render_template('home-anon.html')
+        posts = (Post
+                    .query
+                    .order_by(Post.created_at.desc())
+                    .limit(6)
+                    .all())
+        return render_template('home-anon.html', posts=posts)
 
 @app.route('/movies', methods=["GET", "POST"])
 # @check_auth
@@ -431,7 +427,7 @@ def list_movies():
     """Choose the movie to add post for:
     """
 
-    movies = Movie.query.limit(10)
+    movies = Movie.query.limit(12)
     return render_template('movies.html', movies=movies)
 
 @app.route('/api/get_movies')
@@ -445,13 +441,64 @@ def api_get_movies():
     return jsonify(movies=serialized)
 
 @app.route('/movies/<int:movie_id>', methods=["GET", "POST"])
-@check_auth
+# @check_auth
 def show_movie(movie_id):
     """Choose the movie to add post for:
     """
     movie = Movie.query.get_or_404(movie_id)
     
     return render_template('movie-locations.html', movie=movie)
+
+@app.route('/locations', methods=["GET", "POST"])
+def search_locations():
+    """Search a location to retrieve posts for it:
+    """
+    q = request.form.get("location")
+    
+    if q:
+        locations = db.session.query(Location).filter( (Location.city.ilike(f'{q}%')) | Location.state.ilike(f'{q}%') ).distinct().limit(20)
+
+        a = [list(i.posts) for i in locations]
+        posts = []
+        for i in a:
+            for j in i:
+                posts.append(j)
+    
+    else:
+        location = Location.query.filter((Location.city=='New York')).first()
+        posts = location.posts
+    
+    
+
+    if g.user:
+        likes = [like.id for like in g.user.likes]
+        return render_template('locations.html', posts=posts, likes=likes)
+
+    return render_template('locations.html', posts=posts)
+
+@app.route('/api/get_locations')
+def api_get_locations():
+    """API to get locations:: 
+    """
+    
+    lat = request.args["lat"]
+    max_lat = float(lat)+0.5
+    min_lat = float(lat)-0.5
+
+    lng = request.args["lng"]
+    max_lng = float(lng)+0.5
+    min_lng = float(lng)-0.5
+    
+    locations = Location.query.filter(Location.lat>min_lat, Location.lat<max_lat, Location.lng>min_lng, Location.lng<max_lng).all()
+    post_list=[]
+
+    for location in locations:
+        for post in location.posts:
+            post_list.append(post)
+
+    serialized = [i.serialize() for i in post_list]
+    
+    return jsonify(posts=serialized)
 
 ##############################################################################
 # Turning off all caching in Flask
@@ -474,21 +521,3 @@ def add_header(req):
 def page_not_found(e):
     #snip
     return render_template('404.html'), 404
-
-
-
-@app.route('/geolocation', methods=["GET", "POST"])
-@check_auth
-def geolocation():
-    """Choose the movie to add post for:
-    """
-
-    return render_template('geolocation.html')
-
-# @app.route('/geolocation2', methods=["GET", "POST"])
-# @check_auth
-# def geolocation2():
-#     """Choose the movie to add post for:
-#     """
-
-#     return render_template('googmaps.html')

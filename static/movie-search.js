@@ -1,4 +1,4 @@
-// ** processForm: get data from form and make AJAX call to our API. */
+// ** processForm: get data from form and make AJAX call to TMDB API. */
 MovieAPIKey = "6461108259d95817ace0a23e57345c98";
 imagePath = "https://image.tmdb.org/t/p/w500";
 
@@ -32,23 +32,25 @@ function makeDelay(ms) {
 }
 var delay = makeDelay(1000);
 
-/** handleResponse: deal with response from our lucky-num API. */
+/** handleResponse: deal with response from TMDB API. */
 
 function handleResponse(results) {
   $movieList = $("#movie-list");
   $movieList.html("");
 
-  for (let i = 0; i < Math.min(results.length, 10); i++) {
+  for (let i = 0; i < Math.min(results.length, 12); i++) {
     $movieList.append(`
-      <div class="col-3">
-      <div class="card">
-      <img class="card-img-top" src="${imagePath}${results[i].poster_path}" alt="Card image cap">
-      <div class="card-body">
-      <h5 class="card-title">${results[i].title}</h5>
-      <p class="card-text">${results[i].release_date}</p>
-      <a class='btn btn-sm btn-primary' href='new/${results[i].id}'>Add Post</a>
-      </div>  
-      </div>  
+    <div class="col-4 movie-card">
+      <a href='new/${results[i].id}'>
+        <div class="card my-2">
+          <img class="card-img-top" src="${imagePath}${results[i].poster_path}" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">${results[i].title}</h5>
+            <p class="card-text">${results[i].release_date}</p>
+          </div>
+        </div>
+      </a>
+    </div>  
       `);
   }
 }

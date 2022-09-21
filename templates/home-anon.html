@@ -1,14 +1,32 @@
-{% extends 'base.html' %}
-{% block content %}
-  <div class="home-hero">
-    <h1>What's Happening?</h1>
-    <h4>New to Warbler?</h4>
-    <p>Sign up now to get your own personalized timeline!</p>
-    <a href="/signup" class="btn btn-primary">Sign up</a>
-    <br>
-    <br>
-    <h4>Already have an account?</h4>
-    <p> Log In to your account!</p>
-    <a href="/login" class="btn btn-primary">Login</a>
+{% extends 'base.html' %} {% block content %}
+<div class="home-hero">
+  <img src="/static/images/movie_locations.png" class="img-fluid" alt="" />
+  <!-- 
+  <div class="row my-4">
+    <div class="col-auto mx-4">
+      <a href="/signup" class="btn btn-dark">Browse Movies</a>
+    </div>
+    <div class="col-auto mx-4">
+      <a href="/login" class="btn btn-dark">Browse Locations</a>
+    </div>
+  </div> -->
+
+  <h1>World's Biggest Movie Locations Social Platform</h1>
+
+  <div class="row">
+    <div class="col-auto mx-4">
+      <h4>Do you have an account?</h4>
+      <p>Sign up now and post your movie location photos!</p>
+      <a href="/signup" class="btn btn-primary my-2">Sign up</a>
+    </div>
+    <div class="col-auto mx-4">
+      <h4>Already have an account?</h4>
+      <p>Log In to your account!</p>
+      <a href="/login" class="btn btn-primary my-2">Login</a>
+    </div>
   </div>
+</div>
+<!-- <script>
+  $(".carousel").carousel("cycle");
+</script> -->
 {% endblock %}

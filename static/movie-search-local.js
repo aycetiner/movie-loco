@@ -1,4 +1,4 @@
-// ** processForm: get data from form and make AJAX call to our API. */
+// ** processForm: get data from form and make AJAX call to TMDB API. */
 imagePath = "https://image.tmdb.org/t/p/w500";
 
 async function processForm2(evt) {
@@ -27,7 +27,7 @@ function makeDelay(ms) {
 }
 var delay = makeDelay(1000);
 
-/** handleResponse: deal with response from our lucky-num API. */
+/** handleResponse: deal with response from TMDB API. */
 
 function handleResponse(results) {
   $movieList = $("#movie-list");
@@ -35,14 +35,16 @@ function handleResponse(results) {
 
   for (let i = 0; i < Math.min(results.length, 10); i++) {
     $movieList.append(`
-      <div class="col-3">
-      <div class="card">
+      <div class="col-4 movie-card">
+      <a href="/movies/${results[i].id}">
+      <div class="card my-2">
       <img class="card-img-top" src="${imagePath}${results[i].poster_path}" alt="Card image cap">
       <div class="card-body">
       <h5 class="card-title">${results[i].title}</h5>
-      <p class="card-text">${results[i].release_date}</p>
-      <a class='btn btn-sm btn-primary' href='movies/${results[i].id}'>Go Movie Posts</a>
-      </div>  
+      <p class="card-text"><em>Release Date: ${results[i].release_date}</em></p>
+      
+      </div> 
+      </a> 
       </div>  
       `);
   }

@@ -1,15 +1,15 @@
-/**
- *
- * Copyright 2019 Google LLC. All Rights Reserved.
- * SPDX-License-Identifier: Apache-2.0
- */
-// @ts-nocheck TODO remove when fixed
+//GOOGLE MAPS API
 
 let map;
 let marker;
 let geocoder;
 let responseDiv;
 let response;
+let fullAdressSpan = document.getElementById("full-address-span");
+let city = document.getElementById("city");
+let state = document.getElementById("state");
+let country = document.getElementById("country");
+let zipcode = document.getElementById("zipcode");
 
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
@@ -84,7 +84,7 @@ function geocode(request) {
       map.setCenter(results[0].geometry.location);
       marker.setPosition(results[0].geometry.location);
       marker.setMap(map);
-      responseDiv.style.display = "block";
+      responseDiv.style.display = "block hidden";
       response.innerText = JSON.stringify(result, null, 2);
 
       console.log(JSON.parse(response.innerText).results);
@@ -99,10 +99,20 @@ function geocode(request) {
         response.innerText
       ).results[0].geometry.location.lng;
 
+      fullAdressSpan.innerText = "";
       let address = document.getElementById("address");
       address.value = `${
         JSON.parse(response.innerText).results[0].formatted_address
       }`;
+      fullAdressSpan.innerText = `${
+        JSON.parse(response.innerText).results[0].formatted_address
+      }`;
+
+      //Deleting previous values.
+      city.value = "";
+      state.value = "";
+      country.value = "";
+      zipcode.value = "";
 
       for (let i of JSON.parse(response.innerText).results[0]
         .address_components) {

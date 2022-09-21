@@ -1,44 +1,51 @@
-{% extends 'base.html' %} {% block content %}
-
-<div class="row justify-content-center">
-  <div class="jumbotron jumbotron-fluid">
-    <div class="container">
-      <img
-        src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}"
-        alt="Card image cap"
-      />
-      <h1 class="display-4">{{movie.title}}</h1>
-    </div>
-  </div>
-
-  <div class="col-md-12">
-    <div id="posts-list" class="row card-deck">
-      {% for post in movie.posts %}
-      <div class="col-12">
-        <div class="card">
-          <img
-            class="card-img-top"
-            src="{{post.image_url}}"
-            alt="Card image cap"
-          />
-          <div class="card-body">
-            <h5 class="card-title">{{post.title}}</h5>
-            <p class="card-text">{{post.created_at}}</p>
-            <p class="card-text">
-              {{post.location.city}}, {{post.location.state}}
-            </p>
-            <a class="btn btn-sm btn-primary" href="/posts/{{post.id}}"
-              >Go Location</a
-            >
-          </div>
-        </div>
+{% extends 'base.html' %} {% block topcontent %}
+<!-- Top part where movie picture and information are stored -->
+<div class="jumbotron jumbotron-fluid bg-dark p-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col">
+        <img
+          style="max-width: 300px"
+          src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}"
+          alt="Card image cap"
+        />
       </div>
-      {% endfor %}
+
+      <div class="col">
+        <h1 class="display-5 text-light">{{movie.title}}</h1>
+        <br />
+        <p class="text-light">
+          Check the movie locations below for {{movie.title}}!
+        </p>
+      </div>
     </div>
   </div>
 </div>
+{% endblock %} {% block content %}
 
-<div id="movie-list" class="row card-deck"></div>
+<!-- Bottom part where location posts are stored. -->
+<div id="posts-list" class="row card-deck justify-content-center">
+  {% for post in movie.posts %}
+  <div class="col-auto justify-content-center">
+    <div class="card p-2 postCard">
+      <img
+        style="max-height: 300px"
+        class="card-img-top"
+        src="{{post.image_url}}"
+        alt="Card image cap"
+      />
+      <div class="card-body">
+        <h5 class="card-title">{{post.title}}</h5>
+        <p class="card-text">{{post.created_at.strftime('%d %B %Y')}}</p>
+        <p class="card-text">{{post.location.city}}, {{post.location.state}}</p>
+        <a class="btn btn-sm btn-primary" href="/posts/{{post.id}}"
+          >Go to Location</a
+        >
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 {% endblock %}

@@ -1,99 +1,138 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% block head %}
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
-<div class="bg"></div>
-<div class="row justify-content-center">
-  <div class="col-md-6">
-    <ul class="list-group no-hover" id="messages">
-      <li class="list-group-item">
-        <a href="/posts/{{ post.id }}" class="message-link"></a>
-        <a href="/users/{{ post.user.id }}">
-          <img src="{{ post.user.image_url }}" alt="" class="timeline-image" />
-        </a>
-        <div class="message-area">
-          <a href="/users/{{ post.user.id }}">@{{ post.user.username }}</a>
-          <span class="text-muted"
-            ><small>{{ post.created_at.strftime('%d %B %Y') }}</small></span
-          >
+<!-- <link rel="stylesheet" type="text/css" href="./style.css" />
+<script type="module" src="./index.js"></script> -->
+{% endblock %} {% block content %}
 
-          <h5>{{ post.title }}</h5>
-          <hr />
-          <h6>
-            <span class="text-muted"><em>Description</em></span>
-          </h6>
-          <p>{{ post.description }}</p>
+<div
+  style="
+background:   url('https://image.tmdb.org/t/p/w500{{post.movie.poster_path}}');
+background-position: center;
+background-color: #343a40;
+"
+>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <ul class="list-group no-hover" id="messages">
+        <li class="list-group-item">
+          <a href="/users/{{ post.user.id }}">
+            <img
+              src="{{ post.user.image_url }}"
+              alt=""
+              class="timeline-image"
+            />
+          </a>
+          <div class="message-area">
+            <a href="/users/{{ post.user.id }}">@{{ post.user.username }}</a>
+            <span class="text-muted"
+              ><small>{{ post.created_at.strftime('%d %B %Y') }}</small></span
+            >
 
-          <div>
-            <image
-              style="height: 100%; width: 100%"
-              src="{{post.image_url}}"
-            ></image>
-            <p class="my-1">
-              <span class="text-muted"><em>Movie:</em></span>
-              <span>{{ post.movie.title}}</span>
-              <span class="mx-3">
-                <span class="text-muted"><em>Location:</em></span>
-                <span>{{ post.location.city }}, {{ post.location.state }}</span>
-              </span>
-            </p>
+            <h5>{{ post.title }}</h5>
+            <hr />
+            <h6>
+              <span class="text-muted"><em>Description</em></span>
+            </h6>
+            <span
+              class="latlng hidden"
+              data-lat="{{ post.location.lat }}"
+              data-lng="{{ post.location.lng }}"
+            ></span>
+            <p>{{ post.description }}</p>
+
+            <div>
+              <image
+                style="height: 100%; width: 100%"
+                src="{{post.image_url}}"
+              ></image>
+              <p class="my-1">
+                <span class="text-muted"><em>Movie:</em></span>
+                <span
+                  ><a href="/movies/{{post.movie.id}}"
+                    >{{ post.movie.title}}</a
+                  ></span
+                >
+                <span class="mx-3">
+                  <span class="text-muted"><em>Location:</em></span>
+                  <span
+                    >{{ post.location.city }}, {{ post.location.state }}</span
+                  >
+                </span>
+              </p>
+            </div>
           </div>
-        </div>
-        {% if post.user_id != g.user.id%}
-        <form
-          method="POST"
-          action="/users/add_like/{{ post.id }}"
-          id="messages-form"
-          class="messages-form"
-          data-id="{{ post.id }}"
-        >
-          <button
-            type="submit"
-            class="
+          {% if post.user_id != g.user.id%}
+          <form
+            method="POST"
+            action="/users/add_like/{{ post.id }}"
+            id="messages-form"
+            class="messages-form"
+            data-id="{{ post.id }}"
+          >
+            <button
+              type="submit"
+              class="
               btn 
               btn-sm 
               {{'btn-primary' if post.id in likes else 'btn-secondary'}}"
-          >
-            <i class="fa fa-thumbs-up"></i>
-          </button>
-        </form>
-        {% endif %}
-      </li>
-    </ul>
+            >
+              <i class="fa fa-thumbs-up"></i>
+            </button>
+          </form>
+          {% endif %}
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
+<div class="">
+  <!--The div element for the map -->
+  <div
+    id="map"
+    class="align-self-center rounded my-4"
+    style="height: 500px; width: 100%"
+  ></div>
+</div>
+
+<!-- 
+     The `defer` attribute causes the callback to execute after the full HTML
+     document has been parsed. For non-blocking uses, avoiding race conditions,
+     and consistent behavior across browsers, consider loading using Promises
+     with https://www.npmjs.com/package/@googlemaps/js-api-loader.
+    -->
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCp1jKqmi89h2mhNsKtSZYK3-IT3xEq8go&callback=initMap&v=weekly"
+  defer
+></script>
+
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-  // handles like/unlike of a post
+  // Initialize and add the map
+  function initMap() {
+    // The location of post_location
 
-  async function processForm(evt) {
-    evt.preventDefault();
-    let postID = $(this).attr("data-id");
-
-    const resp = await axios({
-      method: "POST",
-      url: `/users/add_like/${postID}`,
+    let my_lat = parseFloat($(".latlng").attr("data-lat"));
+    let my_lng = parseFloat($(".latlng").attr("data-lng"));
+    console.log(my_lat);
+    const post_location = {
+      lat: my_lat,
+      lng: my_lng,
+    };
+    // The map, centered at post_location
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 4,
+      center: post_location,
     });
-    if ($(this).children("button").hasClass("btn-primary")) {
-      $(this).children("button").removeClass("btn-primary");
-      $(this).children("button").addClass("btn-secondary");
-    } else {
-      $(this).children("button").removeClass("btn-secondary");
-      $(this).children("button").addClass("btn-primary");
-    }
+    // The marker, positioned at post_location
+    const marker = new google.maps.Marker({
+      position: post_location,
+      map: map,
+    });
   }
 
-  $(".messages-form").on("submit", processForm);
-
-  // reloads the page when using browser back button
-
-  window.addEventListener("pageshow", function (event) {
-    var historyTraversal =
-      event.persisted ||
-      (typeof window.performance != "undefined" &&
-        window.performance.navigation.type === 2);
-    if (historyTraversal) {
-      // Handle page restore.
-      window.location.reload();
-    }
-  });
+  window.initMap = initMap;
 </script>
+
+<script src="/static/handle-like.js"></script>
 {% endblock %}

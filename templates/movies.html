@@ -1,29 +1,39 @@
 {% extends 'base.html' %}
+<!-- Header section with movie search bar -->
+{% block topcontent %}
+<section class="jumbotron text-center py-5 bg-light" style="background: linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) ), url('/static/images/movies-background.jpeg'); background-size:60%;">
+  <div class="container">
+    <h1 class="jumbotron-heading text-light">SEARCH MOVIES</h1>
+    <p class="lead text-light">Look up Movies to see Movie Locations!</p>
+    <p>
+      <form id='movie-search-form-2' method="POST">
+        <input id='movie-name' type="text"> </input>
+        <button type="Submit" class="btn btn-primary my-2 mx-2">Search</button>
+      </form>
+    </p>
+  </div>
+</section>
+{% endblock %}
+
+<!-- Bottom part where movies are generated -->
 {% block content %}
 
-  <div class="row justify-content-center">
+  <div class="row justify-content-center my-3 ">
     <div class="col-md-12">
-      
-      <form id='movie-search-form-2' method="POST">
 
-        <input id='movie-name' type="text"> </input>
-
-        <button type="Submit" class="btn btn-outline-success btn-block">Search</button>
-        
-        </form>
-
-        <div id='movie-list' class="row card-deck">
+        <div id='movie-list' class="row card-deck justify-content-center">
         
         {% for movie in movies %}
-        <div class="col-3">
-          <div class="card">
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3 movie-card">
+          <a href="/movies/{{movie.id}}">
+          <div class="card my-2">
           <img class="card-img-top" src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}" alt="Card image cap">
           <div class="card-body">
-          <h5 class="card-title">{{movie.title}}</h5>
-          <p class="card-text">{{movie.release_date}}</p>
-          <a class='btn btn-sm btn-primary' href='/movies/{{movie.id}}'>Go Movie Posts</a>
+          <h6 class="card-title">{{movie.title}}</h6>
+          <p class="card-text"><em>Release Date: {{movie.release_date}}</em></p>
           </div>  
         </div>
+      </a>
       </div>
       {% endfor %}
     </div>
@@ -35,6 +45,5 @@
   <div id='movie-list' class="row card-deck">
   </div>
 
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="/static/movie-search-local.js"></script>
 {% endblock %}

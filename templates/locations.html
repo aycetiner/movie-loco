@@ -1,0 +1,117 @@
+{% extends 'base.html' %} {% block head %}
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+<script>
+  const process = { env: {} };
+  process.env.GOOGLE_MAPS_API_KEY = "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg";
+</script>
+
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="/static/stylesheets/geolocation.css"
+/>
+<script type="module" src="/static/geolocation2.js"></script>
+{% endblock %}
+
+<!-- Top content -->
+{% block topcontent %}
+<section
+  class="jumbotron text-center py-5"
+  style="
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)),
+      url('/static/images/locations-background.png');
+    background-size: cover;
+  "
+>
+  <div class="container">
+    <h1 class="jumbotron-heading text-light">SEARCH LOCATIONS</h1>
+    <p class="lead text-light">
+      Lookup Movie Locations on the map! Enter a Location!
+    </p>
+  </div>
+</section>
+{% endblock %}
+
+<!-- Main Content -->
+{% block content %}
+<div class="row justify-content-center my-1">
+  <div class="col">
+    <div id="messages" class="row card-deck">
+      {% for post in posts %}
+      <div class="col-2 justify-content-center my-1">
+        <div class="card p-2 postCard">
+          <a href="/posts/{{ post.id }}" class="message-link"></a>
+          <div class="card-top my-1">
+            <a href="/users/{{ post.user.id }}" id="ppa">
+              <img
+                src="{{ post.user.image_url }}"
+                alt=""
+                class="timeline-image"
+              />
+            </a>
+            <a href="/users/{{ post.user.id }}">{{ post.user.username }}</a>
+            <span class="text-muted"
+              ><small>{{ post.created_at.strftime('%d %B %Y') }}</small></span
+            >
+          </div>
+
+          <image
+            class="card-img-top rounded border-0"
+            src="{{post.image_url}}"
+          ></image>
+
+          <div class="card-body">
+            <h5 class="card-title">{{post.title}}</h5>
+          </div>
+          <div class="card-body">
+            <p class="my-1">
+              <span class="text-muted"><em>Movie:</em></span>
+              <span
+                ><a href="/movies/{{post.movie.id}}"
+                  >{{ post.movie.title}}</a
+                ></span
+              >
+            </p>
+            <p>
+              <span class="text-muted"><em>Location:</em></span>
+              <span>{{ post.location.city }}, {{ post.location.state }}</span>
+            </p>
+          </div>
+          {% if g.user.id %} {% if post.user_id != g.user.id %}
+          <form
+            method="POST"
+            action=""
+            id="messages-form"
+            class="messages-form"
+            data-id="{{ post.id }}"
+          >
+            <button
+              type="submit"
+              class="
+              btn 
+              btn-sm 
+              {{'btn-primary' if post.id in likes else 'btn-secondary'}}"
+            >
+              <i class="fa fa-thumbs-up"></i>
+            </button>
+          </form>
+          {% endif %} {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Google Maps API below-->
+  <div class="col">
+    <div id="map" class="rounded" style="height: 700px"></div>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCp1jKqmi89h2mhNsKtSZYK3-IT3xEq8go&callback=initMap&v=weekly"
+      defer
+    ></script>
+
+    <script src="/static/handle-like.js"></script>
+  </div>
+</div>
+{% endblock %}

@@ -4,8 +4,54 @@ body {
   background-color: #e6ecf0;
 }
 
+.postCard {
+  width: 30rem;
+  height: 35rem;
+}
+
 body.error-404 {
   background-color: #1da1f2;
+}
+
+a {
+  text-decoration: none;
+}
+
+.postCard a.btn {
+  color: white;
+}
+
+.postCard a.btn:hover {
+  text-decoration: none;
+}
+
+.postCard a {
+  color: black;
+  font-weight: bolder;
+}
+
+.postCard .card-img-top {
+  height: 300px;
+}
+
+#ppa:hover {
+  text-decoration: none;
+}
+
+.movie-card a {
+  color: black;
+}
+
+.movie-card {
+  transition: all 0.2s ease-out;
+}
+.movie-card:hover {
+  transform: scale(1.025);
+}
+
+.postCard a:hover {
+  color: black;
+  text-decoration: underline;
 }
 
 .form-control {
@@ -20,13 +66,19 @@ body.error-404 {
   cursor: pointer;
 }
 
+.top-content {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
 /* ======================= Nav */
 
 .navbar {
   background-color: #fff;
   height: 46px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.25);
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
   position: relative;
   z-index: 9999;
 }
@@ -268,7 +320,7 @@ nav + .container {
   z-index: 1;
 }
 
-#messages .list-group-item a:not(.message-link) {
+/* #messages .list-group-item a:not(.message-link) {
   position: relative;
   z-index: 2;
 }
@@ -280,6 +332,21 @@ nav + .container {
 }
 
 #messages:not(.no-hover) .list-group-item:hover {
+  background-color: #e6ecf0;
+} */
+
+#messages .postCard a:not(.message-link) {
+  position: relative;
+  z-index: 2;
+}
+
+#messages .postCard {
+  display: flex;
+  align-items: flex-start;
+  padding: 7px 20px 12px;
+}
+
+#messages:not(.no-hover) .postCard:hover {
   background-color: #e6ecf0;
 }
 
@@ -396,7 +463,8 @@ p.card-bio {
   width: 100vw;
   left: 0;
   z-index: -1;
-  background-image: url("/static/images/signed-out-home.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("/static/images/signed-out-pic.jpg");
   background-size: cover;
   background-position: center center;
   color: #fff;

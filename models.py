@@ -151,7 +151,7 @@ class Post(db.Model):
     )
 
     description = db.Column(
-        db.String(250),
+        db.String(200),
         nullable=False,
     )
 
@@ -188,6 +188,23 @@ class Post(db.Model):
     location = db.relationship('Location', backref='posts')
     movie = db.relationship('Movie', backref='posts')
 
+    def serialize(self):
+        return {
+            "id":self.id,
+            "title": self.title,
+            "descripton": self.description,
+            "created_at": self.created_at,
+            "image_url": self.image_url,
+            "user_id": self.user_id,
+            "location_id": self.location_id,
+            "movie_id": self.movie_id,
+            "movie_title":self.movie.title,
+            "lat":self.location.lat,
+            "lng":self.location.lng,
+            "city":self.location.city,
+            "state":self.location.state,
+        }
+
 
 class Location(db.Model):
     """An individual location."""
@@ -213,23 +230,23 @@ class Location(db.Model):
 
     address = db.Column(
         db.String,
-        nullable=False
+        # nullable=False
     )
     city = db.Column(
         db.String,
-        nullable=False
+        # nullable=False
     )
     state = db.Column(
         db.String,
-        nullable=False
+        # nullable=False
     )
     country = db.Column(
         db.String,
-        nullable=False
+        # nullable=False
     )
     zipcode = db.Column(
         db.Integer,
-        nullable=False
+        # nullable=False
     )
 
 class Movie(db.Model):

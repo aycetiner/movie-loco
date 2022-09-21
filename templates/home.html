@@ -1,7 +1,16 @@
 {% extends 'base.html' %} {% block content %}
-<div class="row">
+<div
+  class="row"
+  style="
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)),
+      url('/static/images/bg-4.png');
+    background-position: center;
+    background-repeat: repeat;
+  "
+>
+  {% if g.user %}
   <aside class="col-md-4 col-lg-3 col-sm-12" id="home-aside">
-    <div class="card user-card">
+    <div class="card user-card my-1">
       <div>
         <div class="image-wrapper">
           <img src="{{ g.user.header_image_url }}" alt="" class="card-hero" />
@@ -12,8 +21,9 @@
             alt="Image for {{ g.user.username }}"
             class="card-image"
           />
-          <p>@{{ g.user.username }}</p>
+          <p>{{ g.user.username }}</p>
         </a>
+
         <ul class="user-stats nav nav-pills">
           <li class="stat">
             <p class="small">Posts</p>
@@ -33,9 +43,77 @@
       </div>
     </div>
   </aside>
+  {% endif %}
 
-  <div class="col-lg-6 col-md-8 col-sm-12">
-    <ul class="list-group" id="messages">
+  <div
+    id="messages"
+    class="col-lg-6 col-md-8 col-sm-12 card-deck justify-content-center"
+  >
+    {% for post in posts %}
+    <div class="col-2 justify-content-center my-1">
+      <div class="card p-2 postCard">
+        <a href="/posts/{{ post.id }}" class="message-link"></a>
+        <div class="card-top my-1">
+          <a href="/users/{{ post.user.id }}" id="ppa">
+            <img
+              src="{{ post.user.image_url }}"
+              alt=""
+              class="timeline-image"
+            />
+          </a>
+          <a href="/users/{{ post.user.id }}">{{ post.user.username }}</a>
+          <span class="text-muted"
+            ><small>{{ post.created_at.strftime('%d %B %Y') }}</small></span
+          >
+        </div>
+
+        <image
+          class="card-img-top rounded border-0"
+          src="{{post.image_url}}"
+        ></image>
+
+        <div class="card-body">
+          <h5 class="card-title">{{post.title}}</h5>
+        </div>
+        <div class="card-body">
+          <p class="my-1">
+            <span class="text-muted"><em>Movie:</em></span>
+            <span
+              ><a href="/movies/{{post.movie.id}}"
+                >{{ post.movie.title}}</a
+              ></span
+            >
+          </p>
+          <p>
+            <span class="text-muted"><em>Location:</em></span>
+            <span>{{ post.location.city }}, {{ post.location.state }}</span>
+          </p>
+        </div>
+        {% if post.user_id != g.user.id%}
+        <form
+          method="POST"
+          action=""
+          id="messages-form"
+          class="messages-form"
+          data-id="{{ post.id }}"
+        >
+          <button
+            type="submit"
+            class="
+              btn 
+              btn-sm 
+              {{'btn-primary' if post.id in likes else 'btn-secondary'}}"
+          >
+            <i class="fa fa-thumbs-up"></i>
+          </button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- <ul class="list-group" id="messages">
       {% for post in posts %}
       <li class="list-group-item my-2">
         <a href="/posts/{{ post.id }}" class="message-link"></a>
@@ -43,7 +121,7 @@
           <img src="{{ post.user.image_url }}" alt="" class="timeline-image" />
         </a>
         <div class="message-area">
-          <a href="/users/{{ post.user.id }}">@{{ post.user.username }}</a>
+          <a href="/users/{{ post.user.id }}">{{ post.user.username }}</a>
           <span class="text-muted"
             ><small>{{ post.created_at.strftime('%d %B %Y') }}</small></span
           >
@@ -56,13 +134,18 @@
               style="height: 100%; width: 100%"
               src="{{post.image_url}}"
             ></image>
+            <hr>
             <p class="my-1">
               <span class="text-muted"><em>Movie:</em></span>
-              <span>{{ post.movie.title}}</span>
-              <span class="mx-3">
+              <span
+                ><a href="/movies/{{post.movie.id}}"
+                  >{{ post.movie.title}}</a
+                ></span
+              >
+              <p>
                 <span class="text-muted"><em>Location:</em></span>
                 <span>{{ post.location.city }}, {{ post.location.state }}</span>
-              </span>
+              </p>
             </p>
           </div>
         </div>
@@ -85,7 +168,8 @@
         {% endif %}
       </li>
       {% endfor %}
-    </ul>
-  </div>
+    </ul> -->
 </div>
+<script src="/static/handle-like.js"></script>
+
 {% endblock %}

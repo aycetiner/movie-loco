@@ -1,31 +1,52 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField, IntegerField, FloatField
-from wtforms.validators import InputRequired, Length, URL
+from wtforms import StringField, PasswordField, TextAreaField, IntegerField, FloatField, widgets
+from wtforms.validators import InputRequired, Length, URL, Optional
 
+# class PostForm(FlaskForm):
+#     """Form for adding/editing posts."""
+
+#     title = StringField('Title', validators=[InputRequired()])
+
+#     description = StringField('Description', validators=[InputRequired()])
+
+#     image_url = StringField('Location Image Link', validators=[InputRequired(),URL(require_tld=True, message=u'Invalid URL.')])
+
+#     lat = FloatField('lat', validators=[InputRequired()])
+
+#     lng = FloatField('lng', validators=[InputRequired()])
+    
+#     address = StringField('address', validators=[InputRequired()])
+
+#     city = StringField('city', validators=[InputRequired()])
+
+#     state = StringField('state', validators=[InputRequired()])
+
+#     country = StringField('country', validators=[InputRequired()])
+
+#     zipcode = IntegerField('zipcode', validators=[InputRequired()])
+    
 class PostForm(FlaskForm):
     """Form for adding/editing posts."""
 
-    title = StringField('Title', validators=[InputRequired()])
+    title = StringField('Title:', validators=[InputRequired()])
 
-    description = StringField('Description', validators=[InputRequired()])
+    description = StringField('Description:', validators=[InputRequired()])
 
     image_url = StringField('Location Image Link', validators=[InputRequired(),URL(require_tld=True, message=u'Invalid URL.')])
 
-    lat = FloatField('lat', validators=[InputRequired()])
+    lat = FloatField('Latitute',widget=widgets.HiddenInput(), validators=[InputRequired()])
 
-    lng = FloatField('lng', validators=[InputRequired()])
+    lng = FloatField('Longtitude',widget=widgets.HiddenInput(), validators=[InputRequired()])
     
-    address = StringField('address', validators=[InputRequired()])
+    address = StringField('Address',widget=widgets.HiddenInput(), validators=[InputRequired()])
 
-    city = StringField('city', validators=[InputRequired()])
+    city = StringField('City',widget=widgets.HiddenInput(), validators=[Length(max=200)])
 
-    state = StringField('state', validators=[InputRequired()])
+    state = StringField('State',widget=widgets.HiddenInput(), validators=[Length(min=0, max=50)])
 
-    country = StringField('country', validators=[InputRequired()])
+    country = StringField('Country',widget=widgets.HiddenInput(), validators=[Length(min=0, max=50)])
 
-    zipcode = IntegerField('zipcode', validators=[InputRequired()])
-    
- 
+    zipcode = IntegerField('Zipcode',widget=widgets.HiddenInput(), validators=[Optional(strip_whitespace=True)])
 
 class UserAddForm(FlaskForm):
     """Form for adding users."""
@@ -49,8 +70,6 @@ class ProfileEditForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired()])
     email = StringField('E-mail', validators=[InputRequired()])
     image_url = StringField('(Optional) Profile Image URL')
-    first_name = StringField('First Name', validators=[InputRequired()])
-    last_name = StringField('Last Name', validators=[InputRequired()])
     bio = TextAreaField('Bio')
     password = PasswordField('Password', validators=[Length(min=6)])
 
