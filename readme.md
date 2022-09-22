@@ -28,11 +28,10 @@ Built with Flask WTForms and SQL Alchemy additon to Python + Flask.
 - [![Bootstrap][bootstrap.com]][bootstrap-url]
 - [![JQuery][jquery.com]][jquery-url]
 - [![PostgreSQL][postgresql.org]][postgresql-url]
-- [![GoogleMapsAPI][googlemapsapi.com]][googlemapsapi-url]
 
 ## APIs Used
-  https://developers.themoviedb.org/3/getting-started/introduction
-  https://developers.google.com/maps
+- [![GoogleMapsAPI][googlemapsapi.com]][googlemapsapi-url]
+- [![TMDB][tmdb.com]][tmdb-url]
 
 
 ## License
@@ -99,4 +98,6 @@ SOFTWARE.
 [python-url]: https://www.python.org/
 [postgresql.org]: https://img.shields.io/badge/-PostgreSQL-F5F5F5?style=for-the-badge&logo=postgresql
 [postgresql-url]: https://www.postgresql.org/
+[tmdb.com]: https://img.shields.io/badge/-TMDB_API-white?style=for-the-badge&logo=themoviedatabase&style=for-the-badge
+[tmdb-url]: https://developers.themoviedb.org/3/getting-started/introduction
 [license-img]: https://img.shields.io/apm/l/l
