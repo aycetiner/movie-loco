@@ -30,6 +30,11 @@ Built with Flask WTForms and SQL Alchemy additon to Python + Flask.
 - [![PostgreSQL][postgresql.org]][postgresql-url]
 - [![GoogleMapsAPI][googlemapsapi.com]][googlemapsapi-url]
 
+## APIs Used
+  https://developers.themoviedb.org/3/getting-started/introduction
+  https://developers.google.com/maps
+
+
 ## License
 
 MIT License
