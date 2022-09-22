@@ -1,7 +1,5 @@
 ## Movie-Locations App
 
-![visitors](https://visitor-badge.laobi.icu/badge?page_id=page.id)
-
 <!-- GETTING STARTED -->
 
 ## Getting Started
@@ -11,8 +9,9 @@ To get this application running, make sure you do the following in the Terminal:
 1. `python3 -m venv venv`
 2. `source venv/bin/activate`
 3. `pip install -r requirements.txt`
-4. `createdb playlist-app`
-5. `flask run`
+4. `createdb movie-locations`
+5. `python seed.py`
+6. `flask run`
 
 ## Summary
 
@@ -30,6 +29,11 @@ Built with Flask WTForms and SQL Alchemy additon to Python + Flask.
 - [![JQuery][jquery.com]][jquery-url]
 - [![PostgreSQL][postgresql.org]][postgresql-url]
 - [![GoogleMapsAPI][googlemapsapi.com]][googlemapsapi-url]
+
+## APIs Used
+  https://developers.themoviedb.org/3/getting-started/introduction
+  https://developers.google.com/maps
+
 
 ## License
 
