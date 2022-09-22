@@ -28,24 +28,15 @@ from wtforms.validators import InputRequired, Length, URL, Optional
 class PostForm(FlaskForm):
     """Form for adding/editing posts."""
 
-    title = StringField('Title:', validators=[InputRequired()])
-
-    description = StringField('Description:', validators=[InputRequired()])
-
+    title = StringField('Title', validators=[InputRequired()])
+    description = StringField('Description', validators=[InputRequired()])
     image_url = StringField('Location Image Link', validators=[InputRequired(),URL(require_tld=True, message=u'Invalid URL.')])
-
     lat = FloatField('Latitute',widget=widgets.HiddenInput(), validators=[InputRequired()])
-
     lng = FloatField('Longtitude',widget=widgets.HiddenInput(), validators=[InputRequired()])
-    
     address = StringField('Address',widget=widgets.HiddenInput(), validators=[InputRequired()])
-
     city = StringField('City',widget=widgets.HiddenInput(), validators=[Length(max=200)])
-
     state = StringField('State',widget=widgets.HiddenInput(), validators=[Length(min=0, max=50)])
-
     country = StringField('Country',widget=widgets.HiddenInput(), validators=[Length(min=0, max=50)])
-
     zipcode = IntegerField('Zipcode',widget=widgets.HiddenInput(), validators=[Optional(strip_whitespace=True)])
 
 class UserAddForm(FlaskForm):

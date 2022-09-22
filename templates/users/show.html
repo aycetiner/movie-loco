@@ -55,6 +55,26 @@
           <i class="fa fa-thumbs-up"></i>
         </button>
       </form>
+      {% elif post.user_id == g.user.id %}
+      <form
+        class="mx-5"
+        method="POST"
+        action="/posts/{{ post.id }}/edit"
+        id="messages-form"
+      >
+        <button type="submit" class="btn btn-sm btn-warning">
+          <i class="fas fa-edit"></i>
+        </button>
+      </form>
+      <form
+        method="POST"
+        action="/posts/{{ post.id }}/delete"
+        id="messages-form"
+      >
+        <button type="submit" class="btn btn-sm btn-danger">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </form>
       {% endif %}
     </div>
   </div>

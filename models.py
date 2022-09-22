@@ -203,6 +203,8 @@ class Post(db.Model):
             "lng":self.location.lng,
             "city":self.location.city,
             "state":self.location.state,
+            "country":self.location.country,
+            "address":self.location.address,
         }
 
 

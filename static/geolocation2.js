@@ -9,7 +9,7 @@ let response;
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 8,
-    center: { lat: 37.7749295, lng: -122.4194155 },
+    center: { lat: 41.881, lng: -87.623177 },
     mapTypeControl: false,
   });
   geocoder = new google.maps.Geocoder();
@@ -22,7 +22,7 @@ function initMap() {
   const submitButton = document.createElement("input");
 
   submitButton.type = "button";
-  submitButton.value = "Submit";
+  submitButton.value = "Search";
   submitButton.classList.add("button", "button-primary");
 
   const clearButton = document.createElement("input");
@@ -51,10 +51,6 @@ function initMap() {
     map,
   });
 
-  // map.addListener("click", (e) => {
-  //   geocode({ location: e.latLng });
-  // });
-
   submitButton.addEventListener("click", () =>
     geocode({ address: inputText.value })
   );
@@ -77,8 +73,8 @@ function geocode(request) {
     .then((result) => {
       const { results } = result;
       map.setCenter(results[0].geometry.location);
-      marker.setPosition(results[0].geometry.location);
-      marker.setMap(map);
+      // marker.setPosition(results[0].geometry.location);
+      // marker.setMap(map);
       responseDiv.style.display = "hidden";
       response.innerText = JSON.stringify(result, null, 2);
 
@@ -88,117 +84,8 @@ function geocode(request) {
 
       let lng = JSON.parse(response.innerText).results[0].geometry.location.lng;
 
-      // const resp = await axios({
-      //     method: "GET",
-      //     url: "/api/get_locations",
-      //     params: {
-      //       lat: lat,
-      //       lng: lng
-      //     },
-      //   });
-
-      let resp = {
-        posts: [
-          {
-            city: "Sunnyvale",
-            created_at: "Mon, 19 Sep 2022 05:06:07 GMT",
-            descripton: "dasdas",
-            id: 6,
-            image_url: "https://pbs.twimg.com/media/En2Kv9KXYAAYLdi.jpg",
-            lat: 37.3807069,
-            lng: -122.0279504,
-            location_id: 6,
-            movie_id: 121,
-            movie_title: "The Lord of the Rings: The Two Towers",
-            state: "CA",
-            title: "dsada",
-            user_id: 7,
-          },
-          {
-            city: "Sunnyvale",
-            created_at: "Mon, 19 Sep 2022 07:31:41 GMT",
-            descripton: "asadada",
-            id: 7,
-            image_url:
-              "https://static.wikia.nocookie.net/valley-of-the-wolves/images/e/ed/Polat_Alemdar.jpg/revision/latest/top-crop/width/360/height/360?cb=20210713063128&path-prefix=tr",
-            lat: 37.3830028,
-            lng: -122.0266886,
-            location_id: 7,
-            movie_id: 121,
-            movie_title: "The Lord of the Rings: The Two Towers",
-            state: "CA",
-            title: "guzel lokasyon",
-            user_id: 7,
-          },
-        ],
-      };
-
-      // results = resp.data.posts;
-
-      let movieList = document.getElementById("messages");
-      movieList.innerHTML = "";
-
-      // For each post, add marker, add infowindow, add it to the movieList div.
-      resp.posts.forEach((s) => {
-        console.log(s);
-
-        //set marker information
-        const infowindow = new google.maps.InfoWindow({
-          content: `
-       
-          <div class="card">
-            <a href="/posts/${s.id}">
-            <img class="card-img-top" src="${s.image_url}" alt="Card image cap">
-            <div class="card-body text-center">
-              <h5 class="card-title ">${s.title}</h5>
-            </div>
-            </a> 
-          </div>
-        `,
-        });
-
-        // The marker, positioned at post locations.
-        const marker = new google.maps.Marker({
-          position: { lat: s.lat, lng: s.lng },
-          map: map,
-          title: s.title,
-        });
-
-        marker.addListener("click", () => {
-          infowindow.open({
-            anchor: marker,
-            map,
-            shouldFocus: false,
-          });
-        });
-
-        //create new Div for each post in map and add it to messages div.
-        let newDiv = document.createElement("div");
-        console.log("newDiv");
-        console.log(newDiv);
-
-        newDiv.innerHTML = `
-          <div class="card">
-            <a href="/posts/${s.id}">
-            <img class="card-img-top" src="${s.image_url}" alt="Card image cap">
-            <div class="card-body text-center">
-              <h5 class="card-title ">${s.title}</h5>
-              <p class="my-1">
-                <span class="text-muted"><em>Movie:</em></span>
-                <span>${s.movie_title}</span>
-              </p>
-              <p class="my-1">
-                <span>
-                  <span class="text-muted"><em>Location:</em></span>
-                  <span>${s.city}, ${s.state}</span>
-                </span>
-              </p>
-            </div>
-            </a> 
-          </div>
-      `;
-        movieList.appendChild(newDiv);
-      });
+      // Getting posts based on entered location
+      get_posts(lat, lng);
 
       return results;
     })
@@ -208,3 +95,95 @@ function geocode(request) {
 }
 
 window.initMap = initMap;
+
+async function get_posts(lat, lng) {
+  const resp1 = await axios({
+    method: "GET",
+    url: "/api/get_locations",
+    params: {
+      lat: lat,
+      lng: lng,
+    },
+  });
+
+  let resp = resp1.data;
+
+  let movieList = document.getElementById("messages");
+  movieList.innerHTML = "";
+
+  // For each post, add marker, add infowindow, add it to the movieList div.
+  resp.posts.forEach((s) => {
+    console.log(s);
+
+    //set marker information
+    const infowindow = new google.maps.InfoWindow({
+      content: `
+       
+          <div class="card">
+            <a href="/posts/${s.id}">
+            <div class="p-3">
+            <img class="card-img-top" style="max-height:100px" src="${s.image_url}" alt="Card image cap">
+            </div>
+            <div class="card-body text-center">
+              <h5 class="card-title ">${s.title}</h5>
+            </div>
+            </a> 
+          </div>
+        `,
+    });
+
+    // The marker, positioned at post locations.
+    const marker = new google.maps.Marker({
+      position: { lat: s.lat, lng: s.lng },
+      map: map,
+      title: s.title,
+      icon: "/static/images/movie_locations(1).png",
+    });
+
+    marker.addListener("click", () => {
+      infowindow.open({
+        anchor: marker,
+        map,
+        shouldFocus: false,
+      });
+    });
+
+    google.maps.event.addListener(map, "click", function (event) {
+      infowindow.close();
+      //autoCenter();
+    });
+
+    //create new Div for each post in map and add it to movie-list div.
+    let newDiv = document.createElement("div");
+
+    newDiv.innerHTML = `
+      <div class="row justify-content-center my-1">
+        <div class="card p-2 postCard">
+          <a href="/posts/${s.id}" class="message-link"></a>
+          <image
+            class="card-img-top rounded border-0"
+            src="${s.image_url}"
+          ></image>
+
+          <div class="card-body">
+            <h5 class="card-title">${s.title}</h5>
+          </div>
+          <div class="card-body">
+            <p class="my-1">
+              <span class="text-muted"><em>Movie:</em></span>
+              <span
+                ><a href="/movies/{{post.movie.id}}"
+                  >${s.movie_title}</a
+                ></span>
+            </p>
+            <p>
+              <span class="text-muted"><em>Location:</em></span>
+              <span>${s.address}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      `;
+    movieList.appendChild(newDiv);
+  });
+}

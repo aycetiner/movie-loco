@@ -13,8 +13,8 @@ let zipcode = document.getElementById("zipcode");
 
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 8,
-    center: { lat: 37.7749295, lng: -122.4194155 },
+    zoom: 9,
+    center: { lat: 41.881, lng: -87.623177 },
     mapTypeControl: false,
   });
   geocoder = new google.maps.Geocoder();
@@ -27,7 +27,7 @@ function initMap() {
   const submitButton = document.createElement("input");
 
   submitButton.type = "button";
-  submitButton.value = "Geocode";
+  submitButton.value = "Search";
   submitButton.classList.add("button", "button-primary");
 
   const clearButton = document.createElement("input");

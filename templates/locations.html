@@ -39,23 +39,10 @@
   <div class="col">
     <div id="messages" class="row card-deck">
       {% for post in posts %}
-      <div class="col-2 justify-content-center my-1">
+
+      <div class="row justify-content-center my-1">
         <div class="card p-2 postCard">
           <a href="/posts/{{ post.id }}" class="message-link"></a>
-          <div class="card-top my-1">
-            <a href="/users/{{ post.user.id }}" id="ppa">
-              <img
-                src="{{ post.user.image_url }}"
-                alt=""
-                class="timeline-image"
-              />
-            </a>
-            <a href="/users/{{ post.user.id }}">{{ post.user.username }}</a>
-            <span class="text-muted"
-              ><small>{{ post.created_at.strftime('%d %B %Y') }}</small></span
-            >
-          </div>
-
           <image
             class="card-img-top rounded border-0"
             src="{{post.image_url}}"
@@ -75,28 +62,9 @@
             </p>
             <p>
               <span class="text-muted"><em>Location:</em></span>
-              <span>{{ post.location.city }}, {{ post.location.state }}</span>
+              <span>{{ post.location.address }}</span>
             </p>
           </div>
-          {% if g.user.id %} {% if post.user_id != g.user.id %}
-          <form
-            method="POST"
-            action=""
-            id="messages-form"
-            class="messages-form"
-            data-id="{{ post.id }}"
-          >
-            <button
-              type="submit"
-              class="
-              btn 
-              btn-sm 
-              {{'btn-primary' if post.id in likes else 'btn-secondary'}}"
-            >
-              <i class="fa fa-thumbs-up"></i>
-            </button>
-          </form>
-          {% endif %} {% endif %}
         </div>
       </div>
       {% endfor %}
@@ -104,8 +72,8 @@
   </div>
 
   <!-- Google Maps API below-->
-  <div class="col">
-    <div id="map" class="rounded" style="height: 700px"></div>
+  <div class="col my-2 fixed">
+    <div id="map" class="rounded" style="height: 700px; width: 700px"></div>
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCp1jKqmi89h2mhNsKtSZYK3-IT3xEq8go&callback=initMap&v=weekly"
       defer

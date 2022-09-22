@@ -12,7 +12,7 @@
   class="jumbotron jumbotron-fluid p-5"
   style="
     background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)),
-      url('https://image.tmdb.org/t/p/w500{{movie.poster_path}}');
+      url('https://image.tmdb.org/t/p/w500{{post.movie.poster_path}}');
     background-position: center; background-repeat: no-repeat;
     background-color: #343a40;
   "
@@ -22,7 +22,7 @@
       <div class="col">
         <img
           style="max-width: 200px"
-          src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}"
+          src="https://image.tmdb.org/t/p/w500{{post.movie.poster_path}}"
           alt="Card image cap"
         />
       </div>
@@ -32,39 +32,41 @@
           class="text-light bg-dark p-3"
           style="position: absolute; left: 0; right: 0"
         >
-          Post a location for: <strong>{{movie.title}}</strong>
+          Edit post
         </h2>
       </div>
     </div>
   </div>
 </div>
 {% endblock %} {% block content %}
+
 <div class="row justify-content-center my-5">
   <div class="col-md-6">
     <!-- Google Maps API -->
-    <h1 class="text-center">Add Movie Location</h1>
-    <p class="text-center">Enter the movie location on the map!</p>
+    <h1 class="text-center">Re-select Location</h1>
+    <p class="text-center">You can pick a new location on the map!</p>
     <div id="map" style="height: 600px"></div>
 
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCp1jKqmi89h2mhNsKtSZYK3-IT3xEq8go&callback=initMap&v=weekly"
       defer
     ></script>
-
     <p class="my-3">
       <span>Address: </span
-      ><span id="full-address-span">-Enter a location on the map-</span>
+      ><span id="full-address-span">{{post.location.address}}</span>
     </p>
-
     <form method="POST">
       {{ form.hidden_tag() }} {% for field in form if field.widget.input_type !=
-      'hidden' %} {{ field.label }} {{ field(placeholder=field.label.text,
-      class="form-control") }} {% for error in field.errors %}
-      <span class="text-danger"> {{ error }} </span>
-
-      {% endfor %} {% endfor %}
+      'hidden' %}
+      <p>
+        {{ field.label }} {{ field(placeholder=field.label.text,
+        class="form-control") }} {% for error in field.errors %}
+        <span class="text-danger"> {{ error }} </span>
+        {% endfor %}
+      </p>
+      {% endfor %}
       <button type="Submit" class="btn btn-outline-success btn-block">
-        Add Post!
+        Edit this post
       </button>
     </form>
   </div>

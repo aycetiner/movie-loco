@@ -364,6 +364,44 @@ def posts_add(movie_id):
 
     return render_template('posts/new.html', form=form, movie=movie)
 
+@app.route('/posts/<int:post_id>/edit', methods=["GET", "POST"])
+@check_auth
+def posts_edit(post_id):
+    """Edit a post:
+    Show form if GET. If valid, update posts and redirect to user page.
+    """
+    post = Post.query.get_or_404(post_id)
+    if (g.user.id==post.user_id):
+        form = PostForm(obj=post.location, title=post.title, description=post.description, image_url=post.image_url)        
+            
+        if form.validate_on_submit():
+            location = Location(
+            lat=form.lat.data, 
+            lng=form.lng.data, 
+            address=form.address.data,  
+            city=form.city.data,
+            state=form.state.data,
+            country=form.country.data,
+            zipcode=form.zipcode.data
+            )        
+            db.session.add(location)
+            db.session.commit()
+            new_location = Location.query.filter_by(lat=form.lat.data, lng=form.lng.data).first()
+
+
+            post.title = form.title.data
+            post.description = form.description.data
+            post.image_url = form.image_url.data
+            post.location_id = new_location.id
+                  
+            db.session.commit()
+
+            return redirect(f"/posts/{post.id}")
+
+        return render_template('posts/edit.html', form=form, post=post)
+    else:
+        flash("You cannot edit another user's post", 'danger')
+        return redirect(f"/posts/{post.id}")
 
 @app.route('/posts/<int:post_id>', methods=["GET"])
 @check_auth
@@ -377,21 +415,23 @@ def posts_show(post_id):
 @app.route('/posts/<int:post_id>/delete', methods=["POST"])
 def post_destroy(post_id):
     """Delete a post."""
-
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-
+    
     post = Post.query.get(post_id)
+
+    if not g.user.id == post.user_id:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
     db.session.delete(post)
     db.session.commit()
 
     return redirect(f"/users/{g.user.id}")
 
-
 ##############################################################################
 # Homepage and error pages
-
 
 @app.route('/')
 def homepage():
@@ -465,8 +505,11 @@ def search_locations():
                 posts.append(j)
     
     else:
-        location = Location.query.filter((Location.city=='New York')).first()
-        posts = location.posts
+        posts=[]
+        locations = Location.query.filter(Location.city=='Chicago').all()
+        for location in locations:
+            for post in location.posts:
+                posts.append(post)
     
     
 

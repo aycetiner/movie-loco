@@ -46,22 +46,23 @@ background-color: #343a40;
                 style="height: 100%; width: 100%"
                 src="{{post.image_url}}"
               ></image>
-              <p class="my-1">
+              <p class="my-2">
                 <span class="text-muted"><em>Movie:</em></span>
                 <span
                   ><a href="/movies/{{post.movie.id}}"
                     >{{ post.movie.title}}</a
                   ></span
                 >
-                <span class="mx-3">
-                  <span class="text-muted"><em>Location:</em></span>
-                  <span
-                    >{{ post.location.city }}, {{ post.location.state }}</span
-                  >
+              </p>
+              <p>
+                <span>
+                  <span class="text-muted"><em>Address:</em></span>
+                  <span>{{ post.location.address }}</span>
                 </span>
               </p>
             </div>
           </div>
+          <!-- Thumbs up button when user is logged in  -->
           {% if post.user_id != g.user.id%}
           <form
             method="POST"
@@ -78,6 +79,27 @@ background-color: #343a40;
               {{'btn-primary' if post.id in likes else 'btn-secondary'}}"
             >
               <i class="fa fa-thumbs-up"></i>
+            </button>
+          </form>
+          <!-- edit and delete buttons for logged in user -->
+          {% elif post.user_id == g.user.id %}
+          <form
+            class="mx-5"
+            method="POST"
+            action="/posts/{{ post.id }}/edit"
+            id="messages-form"
+          >
+            <button type="submit" class="btn btn-sm btn-warning">
+              <i class="fas fa-edit"></i>
+            </button>
+          </form>
+          <form
+            method="POST"
+            action="/posts/{{ post.id }}/delete"
+            id="messages-form"
+          >
+            <button type="submit" class="btn btn-sm btn-danger">
+              <i class="fas fa-trash-alt"></i>
             </button>
           </form>
           {% endif %}
@@ -121,7 +143,7 @@ background-color: #343a40;
     };
     // The map, centered at post_location
     const map = new google.maps.Map(document.getElementById("map"), {
-      zoom: 4,
+      zoom: 12,
       center: post_location,
     });
     // The marker, positioned at post_location
