@@ -39,7 +39,7 @@
   </div>
 </div>
 {% endblock %} {% block content %}
-<div class="row justify-content-center my-5">
+<div class="row justify-content-center my-4 bg-light">
   <div class="col-md-6">
     <!-- Google Maps API -->
     <h1 class="text-center">Add Movie Location</h1>
@@ -63,11 +63,20 @@
       <span class="text-danger"> {{ error }} </span>
 
       {% endfor %} {% endfor %}
-      <button type="Submit" class="btn btn-outline-success btn-block">
+      <button type="Submit" class="btn btn-outline-success btn-block my-2">
         Add Post!
       </button>
     </form>
+    <br />
+    <br />
   </div>
 </div>
-
+<script>
+  let fullAdressSpan = document.getElementById("full-address-span");
+  $("form").on("submit", function () {
+    if ((fullAdressSpan.innerText = "-Enter a location on the map-")) {
+      alert("Please enter a location for your post!");
+    }
+  });
+</script>
 {% endblock %}

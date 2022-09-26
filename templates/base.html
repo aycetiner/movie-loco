@@ -2,14 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Movie Locations</title>
+    <title>Movie Loco</title>
 
     <link
       rel="stylesheet"
       href="https://unpkg.com/bootstrap/dist/css/bootstrap.css"
     />
     <script src="https://unpkg.com/jquery"></script>
-    <script src="https://unpkg.com/popper"></script>
     <script src="https://unpkg.com/bootstrap"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -45,7 +44,7 @@
         <div class="navbar-header">
           <a href="/" class="navbar-brand">
             <img src="/static/images/movie_locations2.png" alt="logo" />
-            <span>Movie Locations</span>
+            <span>Movie Loco</span>
           </a>
         </div>
         <ul class="nav navbar-nav navbar-right">
@@ -76,5 +75,8 @@
       <div class="alert alert-{{ category }}">{{ message }}</div>
       {% endfor %} {% block content %} {% endblock %}
     </div>
+    <footer class="footer">
+      <div>MovieLoco App&trade; by Ali Cetiner. All rights reserved. 2022.</div>
+    </footer>
   </body>
 </html>

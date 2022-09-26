@@ -1,10 +1,7 @@
 {% extends 'users/detail.html' %} {% block user_details %}
-<div
-  id="messages"
-  class="col-lg-6 col-md-8 col-sm-12 card-deck justify-content-center"
->
+<div id="messages" class="col-auto card-deck justify-content-center m-auto">
   {% for post in posts %}
-  <div class="col-2 justify-content-center">
+  <div class="justify-content-center my-1">
     <div class="card p-2 postCard">
       <a href="/posts/{{ post.id }}" class="message-link"></a>
       <div class="card-top my-1">
@@ -34,28 +31,11 @@
         </p>
         <p>
           <span class="text-muted"><em>Location:</em></span>
-          <span>{{ post.location.city }}, {{ post.location.state }}</span>
+          <span>{{ post.location.address}}</span>
         </p>
       </div>
-      {% if post.user_id != g.user.id%}
-      <form
-        method="POST"
-        action=""
-        id="messages-form"
-        class="messages-form"
-        data-id="{{ post.id }}"
-      >
-        <button
-          type="submit"
-          class="
-          btn 
-          btn-sm 
-          {{'btn-primary' if post.id in likes else 'btn-secondary'}}"
-        >
-          <i class="fa fa-thumbs-up"></i>
-        </button>
-      </form>
-      {% elif post.user_id == g.user.id %}
+
+      {% if post.user_id == g.user.id %}
       <form
         class="mx-5"
         method="POST"
@@ -80,6 +60,7 @@
   </div>
   {% endfor %}
 </div>
+
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="/static/handle-like.js"></script>
 {% endblock %}

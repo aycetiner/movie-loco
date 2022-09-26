@@ -64,6 +64,13 @@ function initMap() {
     geocode({ address: inputText.value })
   );
 
+  inputText.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      $(submitButton).click();
+    }
+  });
+
   clearButton.addEventListener("click", () => {
     clear();
   });

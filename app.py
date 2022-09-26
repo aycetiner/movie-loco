@@ -166,7 +166,6 @@ def users_show(user_id):
     """Show user profile."""
         
     user = User.query.get_or_404(user_id)
-    likes = [like.id for like in g.user.likes]
 
     # snagging messages in order from the database;
     # user.messages won't be in order by default
@@ -176,7 +175,7 @@ def users_show(user_id):
                 .order_by(Post.created_at.desc())
                 .limit(100)
                 .all())
-    return render_template('users/show.html', user=user, posts=posts, likes=likes)
+    return render_template('users/show.html', user=user, posts=posts)
 
 
 @app.route('/users/<int:user_id>/likes')
@@ -188,7 +187,6 @@ def users_likes(user_id):
     likes = [like.id for like in g.user.likes]
 
     return render_template('users/likes.html', user=user, likes=likes)
-
 
 
 @app.route('/users/profile', methods=["GET", "POST"])
@@ -260,8 +258,6 @@ def change_password():
         return render_template('users/edit_password.html', form=form)
 
 
-
-
 @app.route('/users/delete', methods=["POST"])
 @check_auth
 def delete_user():
@@ -294,9 +290,7 @@ def like_post(post_id):
         db.session.delete(like)
         db.session.commit()
     
-
     return redirect("/")
-
 
 ##############################################################################
 # Posts routes:
@@ -327,7 +321,7 @@ def posts_add(movie_id):
             release_date=new_movie_json['release_date']
             )
         except:
-            render_template('404.html')
+            return render_template('404.html'), 404
     
     form = PostForm()
 
@@ -346,9 +340,6 @@ def posts_add(movie_id):
         db.session.commit()
         new_location = Location.query.filter_by(lat=form.lat.data, lng=form.lng.data).first()
 
-        
-
-
         post = Post(
             title=form.title.data, 
             description=form.description.data, 
@@ -356,7 +347,6 @@ def posts_add(movie_id):
             location_id=new_location.id, 
             movie_id=movie_id
             )
-
         g.user.posts.append(post)
         db.session.commit()
 
@@ -364,11 +354,12 @@ def posts_add(movie_id):
 
     return render_template('posts/new.html', form=form, movie=movie)
 
+
 @app.route('/posts/<int:post_id>/edit', methods=["GET", "POST"])
 @check_auth
 def posts_edit(post_id):
     """Edit a post:
-    Show form if GET. If valid, update posts and redirect to user page.
+    Show form if GET. If valid, update post and redirect to post page.
     """
     post = Post.query.get_or_404(post_id)
     if (g.user.id==post.user_id):
@@ -403,13 +394,18 @@ def posts_edit(post_id):
         flash("You cannot edit another user's post", 'danger')
         return redirect(f"/posts/{post.id}")
 
+
 @app.route('/posts/<int:post_id>', methods=["GET"])
-@check_auth
 def posts_show(post_id):
     """Show a post."""
-    likes = [like.id for like in g.user.likes]
-    post = Post.query.get(post_id)
-    return render_template('posts/show.html', post=post, likes=likes)
+    if g.user:
+        likes = [like.id for like in g.user.likes]
+
+        post = Post.query.get(post_id)
+        return render_template('posts/show.html', post=post, likes=likes)
+    else:
+        post = Post.query.get(post_id)
+        return render_template('posts/show.html', post=post)
 
 
 @app.route('/posts/<int:post_id>/delete', methods=["POST"])
@@ -436,30 +432,35 @@ def post_destroy(post_id):
 @app.route('/')
 def homepage():
     """Show homepage:
-
-    - anon users: no posts
-    - logged in: 100 most recent posts
     """
+    posts = (Post
+                .query
+                .order_by(Post.created_at.asc())
+                .limit(10)
+                .all())
 
     if g.user:
-        posts = (Post
-                    .query
-                    .order_by(Post.created_at.desc())
-                    .limit(100)
-                    .all())
-        
-
         likes = [like.id for like in g.user.likes]
+        return render_template('homenew.html', posts=posts, likes=likes)
+    
+    return render_template('homenew.html', posts=posts)
 
+
+@app.route('/2')
+def homepage2():
+    """Show homepage:
+    """
+    posts = (Post
+                    .query
+                    .order_by(Post.created_at.asc())
+                    .limit(20)
+                    .all())
+            
+    if g.user:
+        likes = [like.id for like in g.user.likes]
         return render_template('home.html', posts=posts, likes=likes)
 
-    else:
-        posts = (Post
-                    .query
-                    .order_by(Post.created_at.desc())
-                    .limit(6)
-                    .all())
-        return render_template('home-anon.html', posts=posts)
+    return render_template('home-anon.html', posts=posts)
 
 @app.route('/movies', methods=["GET", "POST"])
 # @check_auth

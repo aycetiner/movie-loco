@@ -32,9 +32,9 @@ var delay = makeDelay(1000);
 function handleResponse(results) {
   $movieList = $("#movie-list");
   $movieList.html("");
-
-  for (let i = 0; i < Math.min(results.length, 10); i++) {
-    $movieList.append(`
+  if (results.length > 0) {
+    for (let i = 0; i < Math.min(results.length, 10); i++) {
+      $movieList.append(`
       <div class="col-4 movie-card">
       <a href="/movies/${results[i].id}">
       <div class="card my-2">
@@ -47,6 +47,11 @@ function handleResponse(results) {
       </a> 
       </div>  
       `);
+    }
+  } else {
+    $movieList.html(
+      `<h4 class="text-center text-light p-3">Sorry! <br> We currently have no movie location for the movie you searched! <br> Please try other movies.</h4>`
+    );
   }
 }
 

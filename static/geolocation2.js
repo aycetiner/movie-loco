@@ -55,6 +55,13 @@ function initMap() {
     geocode({ address: inputText.value })
   );
 
+  inputText.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      $(submitButton).click();
+    }
+  });
+
   clearButton.addEventListener("click", () => {
     clear();
   });
@@ -77,8 +84,6 @@ function geocode(request) {
       // marker.setMap(map);
       responseDiv.style.display = "hidden";
       response.innerText = JSON.stringify(result, null, 2);
-
-      console.log(JSON.parse(response.innerText).results);
 
       let lat = JSON.parse(response.innerText).results[0].geometry.location.lat;
 
@@ -112,12 +117,12 @@ async function get_posts(lat, lng) {
   movieList.innerHTML = "";
 
   // For each post, add marker, add infowindow, add it to the movieList div.
-  resp.posts.forEach((s) => {
-    console.log(s);
-
-    //set marker information
-    const infowindow = new google.maps.InfoWindow({
-      content: `
+  console.log(resp.posts);
+  if (resp.posts.length > 0) {
+    resp.posts.forEach((s) => {
+      //set marker information
+      const infowindow = new google.maps.InfoWindow({
+        content: `
        
           <div class="card">
             <a href="/posts/${s.id}">
@@ -130,34 +135,34 @@ async function get_posts(lat, lng) {
             </a> 
           </div>
         `,
-    });
-
-    // The marker, positioned at post locations.
-    const marker = new google.maps.Marker({
-      position: { lat: s.lat, lng: s.lng },
-      map: map,
-      title: s.title,
-      icon: "/static/images/movie_locations(1).png",
-    });
-
-    marker.addListener("click", () => {
-      infowindow.open({
-        anchor: marker,
-        map,
-        shouldFocus: false,
       });
-    });
 
-    google.maps.event.addListener(map, "click", function (event) {
-      infowindow.close();
-      //autoCenter();
-    });
+      // The marker, positioned at post locations.
+      const marker = new google.maps.Marker({
+        position: { lat: s.lat, lng: s.lng },
+        map: map,
+        title: s.title,
+        icon: "/static/images/movie_locations2.png",
+      });
 
-    //create new Div for each post in map and add it to movie-list div.
-    let newDiv = document.createElement("div");
+      marker.addListener("click", () => {
+        infowindow.open({
+          anchor: marker,
+          map,
+          shouldFocus: false,
+        });
+      });
 
-    newDiv.innerHTML = `
-      <div class="row justify-content-center my-1">
+      google.maps.event.addListener(map, "click", function (event) {
+        infowindow.close();
+        //autoCenter();
+      });
+
+      //create new Div for each post in map and add it to movie-list div.
+      let newDiv = document.createElement("div");
+
+      newDiv.innerHTML = `
+      <div class="justify-content-center my-1">
         <div class="card p-2 postCard">
           <a href="/posts/${s.id}" class="message-link"></a>
           <image
@@ -184,6 +189,9 @@ async function get_posts(lat, lng) {
         </div>
       </div>
       `;
-    movieList.appendChild(newDiv);
-  });
+      movieList.appendChild(newDiv);
+    });
+  } else {
+    movieList.innerHTML = `<h4 class="text-center text-light p-3">Sorry! <br> We currently have no movie location for the location you searched! <br> Please try other locations.</h4>`;
+  }
 }

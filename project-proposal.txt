@@ -1,0 +1,43 @@
+Project Proposal for Movie Locations App
+
+-What goal will your website be designed to achieve?
+The website is designed to show the locations that movies were filmed. Users will be able to see all the locations for a movie, or all movie scenes at a location.(city, state, country)
+
+
+-What kind of users will visit your site? In other words, what is the demographic of your users?
+The website is designed to serve movie fans. There are no limitations on who could use this website in terms of demographics.
+
+
+-What data do you plan on using? You may have not picked your actual API yet, which is fine, just outline what kind of data you would like it to contain. 
+The website will be designed to create posts about movie locations. In order to give other users more accurate results, website will use a geolocation API (Google’s geocoder API is a good option). I am also planning to implement a map feature with a search bar (just like in many websites which runs on location information such as Airbnb, Zillow etc.) to allow users to search for movie locations around the location they entered.
+
+
+In brief, outline your approach to creating your project (knowing that you may not know everything in advance and that these details might change later). Answer questions like the ones below, but feel free to add more information:
+
+
+-What does your database schema look like?
+My database contains User, Location, Post, Movie and Likes table.
+User = User information
+Location = Location of a movie scene.
+Post = A movie scene post with location information.
+Movie = Movie of related movie scene posts .
+
+-What kinds of issues might you run into with your API? 
+Some of the possible issues with the API can be connectivity issues and implementation of map features in the website.
+
+
+-Is there any sensitive information you need to secure? 
+There are user email, password for the site and API keys for the backend to work.
+
+-What functionality will your app include? 
+The app will allow users to post, and upload pictures and location information with a post. Users can also search for other posts showing the movie locations through a search bar. They can type in a location to look for posts including that location.
+
+-What will the user flow look like? 
+Users will first sign up by entering some user information and setting up a username and a password. 
+Then users will have access to add a post feature as long as they are logged in. 
+Each user will have a profile page. 
+Users can post movie locations. 
+Users can also search for locations to retrieve posts tagged with the searched location. 
+Users can like/unlike posts. Users can edit/delete their profile and their posts. 
+Users can see the posts they liked.
+Users can log out anytime or close the browser window the session will automatically end. 
