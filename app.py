@@ -507,7 +507,7 @@ def search_locations():
     
     else:
         posts=[]
-        locations = Location.query.filter(Location.city=='Chicago').all()
+        locations = Location.query.filter(Location.city=='Chicago').limit(20)
         for location in locations:
             for post in location.posts:
                 posts.append(post)
