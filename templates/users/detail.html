@@ -1,81 +1,87 @@
 {% extends 'base.html' %} {% block content %}
+<div style="min-height: 90vw">
+  <div id="warbler-hero" class="full-width"></div>
 
-<div id="warbler-hero" class="full-width"></div>
-
-<!-- <img
+  <!-- <img
   src="{{ user.image_url }}"
   class="mx-2"
   alt="Image for {{ user.username }}"
   id="profile-avatar"
-/> -->
+  /> -->
 
-<div class="row full-width">
-  <div class="container">
-    <div class="row justify-content-end">
-      <div class="col-9">
-        <ul class="user-stats nav nav-pills">
-          <li class="stat">
-            <img
-              src="{{ user.image_url }}"
-              class="mx-2"
-              alt="Image for {{ user.username }}"
-              id="profile-avatar"
-            />
-          </li>
-          <li class="stat">
-            <p class="small">Posts</p>
-            <h4>
-              <a href="/users/{{ user.id }}">{{ user.posts | length }}</a>
-            </h4>
-          </li>
-          <li class="stat">
-            <p class="small">Likes</p>
-            <h4>
-              <a href="/users/{{ user.id }}/likes">{{ user.likes | length }}</a>
-            </h4>
-          </li>
+  <div class="row full-width">
+    <div class="container">
+      <div class="row justify-content-end">
+        <div class="col-9">
+          <ul class="user-stats nav nav-pills">
+            <li class="stat">
+              <img
+                src="{{ user.image_url }}"
+                class="mx-2"
+                alt="Image for {{ user.username }}"
+                id="profile-avatar"
+              />
+            </li>
+            <li class="stat">
+              <p class="small">Posts</p>
+              <h4>
+                <a href="/users/{{ user.id }}">{{ user.posts | length }}</a>
+              </h4>
+            </li>
+            <li class="stat">
+              <p class="small">Likes</p>
+              <h4>
+                <a href="/users/{{ user.id }}/likes"
+                  >{{ user.likes | length }}</a
+                >
+              </h4>
+            </li>
 
-          {% if g.user.id == user.id %}
-          <li class="stat">
-            <a href="/users/profile" class="btn btn-outline-secondary mx-1"
-              >Edit Profile</a
-            >
-          </li>
-          <li class="stat">
-            <a
-              href="/users/profile/password"
-              class="btn btn-outline-secondary mx-1"
-              >Change Password</a
-            >
-          </li>
-          <li class="stat">
-            <form
-              method="POST"
-              action="/users/delete"
-              class="delete hidden form-inline"
-            ></form>
-            <button
-              onclick="handleDelete()"
-              class="btn btn-outline-danger ml-2"
-            >
-              Delete Profile
-            </button>
-          </li>
-          {% endif %}
-        </ul>
+            {% if g.user.id == user.id %}
+            <li class="stat">
+              <a href="/users/profile" class="btn btn-outline-secondary mx-1"
+                >Edit Profile</a
+              >
+            </li>
+            <li class="stat">
+              <a
+                href="/users/profile/password"
+                class="btn btn-outline-secondary mx-1"
+                >Change Password</a
+              >
+            </li>
+            <li class="stat">
+              <form
+                method="POST"
+                action="/users/delete"
+                class="delete hidden form-inline"
+              ></form>
+              <button
+                onclick="handleDelete()"
+                class="btn btn-outline-danger ml-2"
+              >
+                Delete Profile
+              </button>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="row">
-  <div class="col-sm-3 rounded-2" style="background-color: white; height: 100%">
-    <h4 id="sidebar-username">{{ user.username }}</h4>
+  <div class="row">
+    <div
+      class="col-sm-3 rounded-2"
+      style="background-color: white; height: 100%"
+    >
+      <h4 id="sidebar-username">{{ user.username }}</h4>
 
-    <p>{{ user.bio }}</p>
+      <p>{{ user.bio }}</p>
+    </div>
+
+    {% block user_details %} {% endblock %}
   </div>
-
-  {% block user_details %} {% endblock %}
 </div>
 <script>
   function handleDelete() {

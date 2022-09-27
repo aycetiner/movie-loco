@@ -1,0 +1,139 @@
+"""User model tests."""
+
+# run these tests like:
+#
+#    python -m unittest test_user_model.py
+
+import sys
+import os
+from unittest import TestCase
+from sqlalchemy import exc
+
+#setup path to import from parent directory.
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
+
+from models import db, User, Post, Likes
+
+# BEFORE we import our app, let's set an environmental variable
+# to use a different database for tests (we need to do this
+# before we import our app, since that will have already
+# connected to the database
+
+os.environ['DATABASE_URL'] = "postgresql:///movie_locations"
+
+
+# Now we can import app
+
+from app import app
+
+# Create our tables (we do this here, so we only create the tables
+# once for all tests --- in each test, we'll delete the data
+# and create fresh new clean test data
+
+db.create_all()
+
+
+
+class UserModelTestCase(TestCase):
+    """Test views for users."""
+
+    def setUp(self):
+        """Create test client, add sample data."""
+
+        User.query.delete()
+        Post.query.delete()
+        Likes.query.delete()
+
+        u1 = User.signup("test1", "email1@email.com", "password", None)
+        uid1 = 1111
+        u1.id = uid1
+
+        u2 = User.signup("test2", "email2@email.com", "password", None)
+        uid2 = 2222
+        u2.id = uid2
+
+        db.session.commit()
+
+        self.u1 = u1
+        self.uid1 = uid1
+
+        self.u2 = u2
+        self.uid2 = uid2
+
+        self.client = app.test_client()
+
+    def tearDown(self):
+        """Clean up fouled transactions."""
+        res = super().tearDown()
+        db.session.rollback()
+        return res
+
+    def test_user_model(self):
+        """Does basic model work?"""
+
+        u = User(
+            email="test@test.com",
+            username="testuser",
+            password="HASHED_PASSWORD"
+        )
+
+        db.session.add(u)
+        db.session.commit()
+
+        # User should have no posts & no likes
+        self.assertEqual(len(u.likes), 0)
+        self.assertEqual(len(u.posts), 0)
+
+    ####
+    #
+    # Signup Tests
+    #
+    ####
+     
+
+    def test_valid_signup(self):
+        u3 = User.signup("test3", "email3@email.com", "password", None)
+        self.uid3=9999
+        u3.id = self.uid3
+        db.session.commit()
+
+        u_test = User.query.get(self.uid3)
+        self.assertEqual(u3.id, u_test.id)
+        self.assertEqual(u_test.email, "email3@email.com")
+        self.assertNotEqual(u_test.password, "password")
+        # Bcrypt strings should start with $2b$
+        self.assertTrue(u_test.password.startswith("$2b$"))
+
+    def test_invalid_username_signup(self):
+        u3 = User.signup("test3", "email3@email.com", "password", None)
+        db.session.commit()
+        u4 = User.signup("test3", "email4@email.com", "password", None)
+        with self.assertRaises(exc.IntegrityError) as context:
+            db.session.commit()
+
+    def test_invalid_password_signup(self):
+        with self.assertRaises(ValueError) as context:
+            User.signup("testtest", "email@email.com", "", None)
+        
+        with self.assertRaises(ValueError) as context:
+            User.signup("testtest", "email@email.com", None, None)
+
+    
+    ####
+    #
+    # Authentication Tests
+    #
+    ####
+
+    def test_valid_authentication(self):
+        u = User.authenticate(self.u1.username, "password")
+        self.assertIsNotNone(u)
+        self.assertEqual(u.id, self.uid1)
+    
+    def test_invalid_username(self):
+        self.assertFalse(User.authenticate("badusername", "password"))
+
+    def test_wrong_password(self):
+        self.assertFalse(User.authenticate(self.u1.username, "badpassword"))

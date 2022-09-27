@@ -4,116 +4,117 @@
 <!-- <link rel="stylesheet" type="text/css" href="./style.css" />
 <script type="module" src="./index.js"></script> -->
 {% endblock %} {% block content %}
-
-<div
-  style="
+<div style="min-height: 70vw">
+  <div
+    style="
 background:   url('https://image.tmdb.org/t/p/w500{{post.movie.poster_path}}');
 background-position: center;
 "
->
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <ul class="list-group no-hover" id="messages">
-        <li class="list-group-item">
-          <a href="/users/{{ post.user.id }}">
-            <img
-              src="{{ post.user.image_url }}"
-              alt=""
-              class="timeline-image"
-            />
-          </a>
-          <div class="message-area">
-            <a href="/users/{{ post.user.id }}">@{{ post.user.username }}</a>
-            <span class="text-muted"
-              ><small>{{ post.created_at.strftime('%d %B %Y') }}</small></span
-            >
+  >
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <ul class="list-group no-hover" id="messages">
+          <li class="list-group-item">
+            <a href="/users/{{ post.user.id }}">
+              <img
+                src="{{ post.user.image_url }}"
+                alt=""
+                class="timeline-image"
+              />
+            </a>
+            <div class="message-area">
+              <a href="/users/{{ post.user.id }}">@{{ post.user.username }}</a>
+              <span class="text-muted"
+                ><small>{{ post.created_at.strftime('%d %B %Y') }}</small></span
+              >
 
-            <h5>{{ post.title }}</h5>
-            <hr />
-            <h6>
-              <span class="text-muted"><em>Description</em></span>
-            </h6>
-            <span
-              class="latlng hidden"
-              data-lat="{{ post.location.lat }}"
-              data-lng="{{ post.location.lng }}"
-            ></span>
-            <p>{{ post.description }}</p>
+              <h5>{{ post.title }}</h5>
+              <hr />
+              <h6>
+                <span class="text-muted"><em>Description</em></span>
+              </h6>
+              <span
+                class="latlng hidden"
+                data-lat="{{ post.location.lat }}"
+                data-lng="{{ post.location.lng }}"
+              ></span>
+              <p>{{ post.description }}</p>
 
-            <div>
-              <image
-                style="height: 100%; width: 100%"
-                src="{{post.image_url}}"
-              ></image>
-              <p class="my-2">
-                <span class="text-muted"><em>Movie:</em></span>
-                <span
-                  ><a href="/movies/{{post.movie.id}}"
-                    >{{ post.movie.title}}</a
-                  ></span
-                >
-              </p>
-              <p>
-                <span>
-                  <span class="text-muted"><em>Address:</em></span>
-                  <span>{{ post.location.address }}</span>
-                </span>
-              </p>
+              <div>
+                <image
+                  style="height: 100%; width: 100%"
+                  src="{{post.image_url}}"
+                ></image>
+                <p class="my-2">
+                  <span class="text-muted"><em>Movie:</em></span>
+                  <span
+                    ><a href="/movies/{{post.movie.id}}"
+                      >{{ post.movie.title}}</a
+                    ></span
+                  >
+                </p>
+                <p>
+                  <span>
+                    <span class="text-muted"><em>Address:</em></span>
+                    <span>{{ post.location.address }}</span>
+                  </span>
+                </p>
+              </div>
             </div>
-          </div>
-          <!-- Thumbs up button when user is logged in  -->
-          {% if post.user_id != g.user.id%}
-          <form
-            method="POST"
-            action="/users/add_like/{{ post.id }}"
-            id="messages-form"
-            class="messages-form"
-            data-id="{{ post.id }}"
-          >
-            <button
-              type="submit"
-              class="
+            <!-- Thumbs up button when user is logged in  -->
+            {% if post.user_id != g.user.id%}
+            <form
+              method="POST"
+              action="/users/add_like/{{ post.id }}"
+              id="messages-form"
+              class="messages-form"
+              data-id="{{ post.id }}"
+            >
+              <button
+                type="submit"
+                class="
               btn 
               btn-sm 
               {{'btn-primary' if post.id in likes else 'btn-secondary'}}"
+              >
+                <i class="fa fa-thumbs-up"></i>
+              </button>
+            </form>
+            <!-- edit and delete buttons for logged in user -->
+            {% elif post.user_id == g.user.id %}
+            <form
+              class="mx-5"
+              method="POST"
+              action="/posts/{{ post.id }}/edit"
+              id="messages-form"
             >
-              <i class="fa fa-thumbs-up"></i>
-            </button>
-          </form>
-          <!-- edit and delete buttons for logged in user -->
-          {% elif post.user_id == g.user.id %}
-          <form
-            class="mx-5"
-            method="POST"
-            action="/posts/{{ post.id }}/edit"
-            id="messages-form"
-          >
-            <button type="submit" class="btn btn-sm btn-warning">
-              <i class="fas fa-edit"></i>
-            </button>
-          </form>
-          <form
-            method="POST"
-            action="/posts/{{ post.id }}/delete"
-            id="messages-form"
-          >
-            <button type="submit" class="btn btn-sm btn-danger">
-              <i class="fas fa-trash-alt"></i>
-            </button>
-          </form>
-          {% endif %}
-        </li>
-      </ul>
+              <button type="submit" class="btn btn-sm btn-warning">
+                <i class="fas fa-edit"></i>
+              </button>
+            </form>
+            <form
+              method="POST"
+              action="/posts/{{ post.id }}/delete"
+              id="messages-form"
+            >
+              <button type="submit" class="btn btn-sm btn-danger">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </form>
+            {% endif %}
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
-<div class="">
-  <!--The div element for the map -->
-  <div
-    id="map"
-    class="align-self-center rounded my-4"
-    style="height: 500px; width: 100%"
-  ></div>
+  <div class="">
+    <!--The div element for the map -->
+    <div
+      id="map"
+      class="align-self-center rounded my-4"
+      style="height: 500px; width: 100%"
+    ></div>
+  </div>
 </div>
 
 <!-- 

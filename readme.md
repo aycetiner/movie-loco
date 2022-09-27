@@ -29,17 +29,10 @@ Built with Flask WTForms and SQL Alchemy additon to Python + Flask.
 - [![JQuery][jquery.com]][jquery-url]
 - [![PostgreSQL][postgresql.org]][postgresql-url]
 
-<<<<<<< HEAD
 ## API Reference
 
 - [![GoogleMapsAPI][googlemapsapi.com]][googlemapsapi-url]
 - [![TMDB][tmdb.com]][tmdb-url]
-=======
-## APIs Used
-- [![GoogleMapsAPI][googlemapsapi.com]][googlemapsapi-url]
-- [![TMDB][tmdb.com]][tmdb-url]
-
->>>>>>> 5f01850ca018f8b7edaad8e47f61d9b88cb4ea0d
 
 ## License
 
@@ -79,17 +72,16 @@ SOFTWARE.
 [postgresql-url]: https://www.postgresql.org/
 [tmdb.com]: https://img.shields.io/badge/-TMDB_API-white?style=for-the-badge&logo=themoviedatabase&style=for-the-badge
 [tmdb-url]: https://developers.themoviedb.org/3/getting-started/introduction
-<<<<<<< HEAD
 
 ## Screenshots
 
-![App Screenshot](https://i.ibb.co/3SpdfRZ/Movie-Loco-ss-1.jpg)
-
-![App Screenshot](https://i.ibb.co/VVnn2hg/Movie-Loco-ss-2.jpg)
+![App Screenshot](https://i.ibb.co/2tcX0jS/movie-locations-ss.png)
+![App Screenshot](https://i.ibb.co/hFYs7J3/movie-locations-ss-1.png)
+![App Screenshot](https://i.ibb.co/FDNS6zD/movie-locations-ss-2.png)
+![App Screenshot](https://i.ibb.co/Sxq3092/movie-locations-ss-3.png)
+![App Screenshot](https://i.ibb.co/2SyL7BF/movie-locations-ss-4.png)
+![App Screenshot](https://i.ibb.co/8Y7fQPF/movie-locations-ss-5.png)
 
 ## Feedback
 
 If you have any feedback, please reach out to me at aycetiner@gmail.com
-=======
-[license-img]: https://img.shields.io/apm/l/l
->>>>>>> 5f01850ca018f8b7edaad8e47f61d9b88cb4ea0d

@@ -30,7 +30,7 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 # app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
-toolbar = DebugToolbarExtension(app)
+# toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
 

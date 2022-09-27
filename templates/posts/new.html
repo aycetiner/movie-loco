@@ -72,9 +72,8 @@
   </div>
 </div>
 <script>
-  let fullAdressSpan = document.getElementById("full-address-span");
   $("form").on("submit", function () {
-    if ((fullAdressSpan.innerText = "-Enter a location on the map-")) {
+    if (country.value == false) {
       alert("Please enter a location for your post!");
     }
   });

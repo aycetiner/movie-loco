@@ -14,9 +14,9 @@
       <div class="col">
         <h1 class="display-5 text-light">{{movie.title}}</h1>
         <br />
-        <p class="text-light">
+        <h2 class="text-light">
           Check the movie locations below for {{movie.title}}!
-        </p>
+        </h2>
       </div>
     </div>
   </div>
@@ -24,7 +24,11 @@
 {% endblock %} {% block content %}
 
 <!-- Bottom part where location posts are stored. -->
-<div id="posts-list" class="row card-deck justify-content-center">
+<div
+  id="posts-list"
+  class="row card-deck justify-content-center"
+  style="min-height: 70vw"
+>
   {% for post in movie.posts %}
   <div class="col-auto justify-content-center">
     <div class="card p-2 postCard">
