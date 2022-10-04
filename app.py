@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, flash, redirect, session, g, jsonify
+from flask import Flask, render_template, request, flash, redirect, session, g, jsonify, current_app
 import requests
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
@@ -36,7 +36,8 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 # app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 # toolbar = DebugToolbarExtension(app)
 
-connect_db(app)
+with app.app_context():
+    connect_db(app)
 
 
 
