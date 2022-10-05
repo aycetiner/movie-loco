@@ -9,8 +9,8 @@ from sqlalchemy.exc import IntegrityError
 from forms import PostForm, UserAddForm, LoginForm, ProfileEditForm, ChangePasswordForm
 from models import db, connect_db, User, Post, Likes, Location, Movie
 
-MovieAPIKey='6461108259d95817ace0a23e57345c98'
-GoogleAPIKey = 'AIzaSyCp1jKqmi89h2mhNsKtSZYK3-IT3xEq8go'
+MovieAPIKey='YOUR_TMDB_API_KEY'
+GoogleAPIKey = 'YOUR_GOOGLE_MAPS_API_KEY'
 MOVIE_API_BASE_URL='https://api.themoviedb.org/3/movie'
 
 
