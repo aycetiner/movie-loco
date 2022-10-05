@@ -37,7 +37,7 @@ connect_db(app)
 def check_auth(f):
     def wrapper(*args, **kwargs):
         if not g.user:
-            flash("Access unauthorized.", "danger")
+            flash("Access unauthorized. You must be logged in.", "danger")
             return redirect("/")
         val = f(*args, **kwargs)
         return val

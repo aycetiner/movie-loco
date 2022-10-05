@@ -50,7 +50,7 @@ function handleResponse(results) {
     }
   } else {
     $movieList.html(
-      `<h4 class="text-center text-light p-3">Sorry! <br> We currently have no movie location for the movie you searched! <br> Please try other movies.</h4>`
+      `<h4 class="text-center text-light p-3">Sorry! <br> We currently have no movie location for the movie you searched! <br> Please try other movies or <a href="/posts/movie_search">post a new movie-location</h4>`
     );
   }
 }

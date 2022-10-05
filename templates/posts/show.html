@@ -62,7 +62,7 @@ background-position: center;
               </div>
             </div>
             <!-- Thumbs up button when user is logged in  -->
-            {% if post.user_id != g.user.id%}
+            {% if post.user_id != g.user.id and g.user %}
             <form
               method="POST"
               action="/users/add_like/{{ post.id }}"
@@ -136,20 +136,20 @@ background-position: center;
 
     let my_lat = parseFloat($(".latlng").attr("data-lat"));
     let my_lng = parseFloat($(".latlng").attr("data-lng"));
-    console.log(my_lat);
     const post_location = {
       lat: my_lat,
       lng: my_lng,
     };
     // The map, centered at post_location
     const map = new google.maps.Map(document.getElementById("map"), {
-      zoom: 12,
+      zoom: 14,
       center: post_location,
     });
     // The marker, positioned at post_location
     const marker = new google.maps.Marker({
       position: post_location,
       map: map,
+      icon: "/static/images/movie_locations2.png",
     });
   }
 

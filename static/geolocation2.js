@@ -192,6 +192,6 @@ async function get_posts(lat, lng) {
       movieList.appendChild(newDiv);
     });
   } else {
-    movieList.innerHTML = `<h4 class="text-center text-light p-3">Sorry! <br> We currently have no movie location for the location you searched! <br> Please try other locations.</h4>`;
+    movieList.innerHTML = `<h4 class="text-center text-light p-3">Sorry! <br> We currently have no movie location for the location you searched! <br> Please try other movies or <a href="/posts/movie_search">post a new movie-location</h4>`;
   }
 }
