@@ -1,5 +1,5 @@
 // ** processForm: get data from form and make AJAX call to TMDB API. */
-MovieAPIKey = "6461108259d95817ace0a23e57345c98";
+MovieAPIKey = "YOUR_TMDB_API_KEY";
 imagePath = "https://image.tmdb.org/t/p/w500";
 
 async function processForm(evt) {
