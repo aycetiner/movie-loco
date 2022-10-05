@@ -1,11 +1,6 @@
 {% extends 'base.html' %} {% block head %}
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
-<script>
-  const process = { env: {} };
-  process.env.GOOGLE_MAPS_API_KEY = "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg";
-</script>
-
 <link
   rel="stylesheet"
   type="text/css"
@@ -40,7 +35,7 @@
   <div class="col my-1">
     <div id="map" class="rounded" style="height: 700px; width: 700px"></div>
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCp1jKqmi89h2mhNsKtSZYK3-IT3xEq8go&callback=initMap&v=weekly"
+      src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEYgo&callback=initMap&v=weekly"
       defer
     ></script>
 
