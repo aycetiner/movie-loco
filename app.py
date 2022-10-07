@@ -33,7 +33,8 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 connect_db(app)
 
 
-
+##############################################################################
+# Authentication wrapper function
 def check_auth(f):
     def wrapper(*args, **kwargs):
         if not g.user:
@@ -425,7 +426,7 @@ def post_destroy(post_id):
     return redirect(f"/users/{g.user.id}")
 
 ##############################################################################
-# Homepage and error pages
+# Homepage
 
 @app.route('/')
 def homepage():
@@ -460,10 +461,13 @@ def homepage2():
 
     return render_template('home-anon.html', posts=posts)
 
+##############################################################################
+# Movie related routes
+
 @app.route('/movies', methods=["GET", "POST"])
 # @check_auth
 def list_movies():
-    """Choose the movie to add post for:
+    """Lists the movies that's on the database
     """
 
     movies = Movie.query.limit(12)
@@ -472,7 +476,7 @@ def list_movies():
 @app.route('/api/get_movies')
 # @check_auth
 def api_get_movies():
-    """Choose the movie to add post for:
+    """API route to retrieve movies
     """
     word = request.args["movie"]
     movies = Movie.query.filter(Movie.title.ilike(f'%{word}%')).limit(20)
@@ -482,11 +486,13 @@ def api_get_movies():
 @app.route('/movies/<int:movie_id>', methods=["GET", "POST"])
 # @check_auth
 def show_movie(movie_id):
-    """Choose the movie to add post for:
+    """Show posts for the chosen movie
     """
     movie = Movie.query.get_or_404(movie_id)
     
     return render_template('movie-locations.html', movie=movie)
+##############################################################################
+# Location related routes
 
 @app.route('/locations', methods=["GET", "POST"])
 def search_locations():

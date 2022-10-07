@@ -94,8 +94,6 @@ function geocode(request) {
       responseDiv.style.display = "block hidden";
       response.innerText = JSON.stringify(result, null, 2);
 
-      console.log(JSON.parse(response.innerText).results);
-
       let locationlat = document.getElementById("lat");
       locationlat.value = JSON.parse(
         response.innerText
@@ -149,5 +147,3 @@ function geocode(request) {
 }
 
 window.initMap = initMap;
-
-// console.log(a.lat)

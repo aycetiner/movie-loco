@@ -6,7 +6,6 @@ async function processForm(evt) {
   let movieName = $("#movie-name").val();
 
   evt.preventDefault();
-  console.log(movieName);
   const resp = await axios({
     method: "GET",
     url: `https://api.themoviedb.org/3/search/movie`,
@@ -18,7 +17,6 @@ async function processForm(evt) {
       query: movieName,
     },
   });
-  console.log(resp.data.results);
   results = resp.data.results;
   handleResponse(results);
 }

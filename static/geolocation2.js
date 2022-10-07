@@ -117,7 +117,6 @@ async function get_posts(lat, lng) {
   movieList.innerHTML = "";
 
   // For each post, add marker, add infowindow, add it to the movieList div.
-  console.log(resp.posts);
   if (resp.posts.length > 0) {
     resp.posts.forEach((s) => {
       //set marker information
