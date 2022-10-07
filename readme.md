@@ -34,6 +34,37 @@ Built with Flask WTForms and SQL Alchemy additon to Python + Flask.
 - [![GoogleMapsAPI][googlemapsapi.com]][googlemapsapi-url]
 - [![TMDB][tmdb.com]][tmdb-url]
 
+## Screenshots
+
+![App Screenshot](https://i.ibb.co/2tcX0jS/movie-locations-ss.png)
+![App Screenshot](https://i.ibb.co/hFYs7J3/movie-locations-ss-1.png)
+![App Screenshot](https://i.ibb.co/FDNS6zD/movie-locations-ss-2.png)
+![App Screenshot](https://i.ibb.co/Sxq3092/movie-locations-ss-3.png)
+![App Screenshot](https://i.ibb.co/2SyL7BF/movie-locations-ss-4.png)
+![App Screenshot](https://i.ibb.co/8Y7fQPF/movie-locations-ss-5.png)
+
+## Contributing
+
+#### Step 1
+
+- **Option 1**
+    - Fork this repo!
+
+- **Option 2**
+    - Clone this repo to your local machine.
+
+#### Step 2
+
+- **Build your code** 
+
+#### Step 3
+
+- Create a new pull request.
+
+## Feedback
+
+If you have any feedback, please reach out to me at aycetiner@gmail.com
+
 ## License
 
 MIT License
@@ -58,6 +89,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+
 [bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [bootstrap-url]: https://getbootstrap.com
 [jquery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
@@ -72,16 +104,3 @@ SOFTWARE.
 [postgresql-url]: https://www.postgresql.org/
 [tmdb.com]: https://img.shields.io/badge/-TMDB_API-white?style=for-the-badge&logo=themoviedatabase&style=for-the-badge
 [tmdb-url]: https://developers.themoviedb.org/3/getting-started/introduction
-
-## Screenshots
-
-![App Screenshot](https://i.ibb.co/2tcX0jS/movie-locations-ss.png)
-![App Screenshot](https://i.ibb.co/hFYs7J3/movie-locations-ss-1.png)
-![App Screenshot](https://i.ibb.co/FDNS6zD/movie-locations-ss-2.png)
-![App Screenshot](https://i.ibb.co/Sxq3092/movie-locations-ss-3.png)
-![App Screenshot](https://i.ibb.co/2SyL7BF/movie-locations-ss-4.png)
-![App Screenshot](https://i.ibb.co/8Y7fQPF/movie-locations-ss-5.png)
-
-## Feedback
-
-If you have any feedback, please reach out to me at aycetiner@gmail.com
