@@ -15,7 +15,7 @@ To get this application running, make sure you do the following in the Terminal:
 
 The movie locations app is serving people to find the locations where their favorite movies were shot! Users can post new movie-locations to contribute to this social platform.
 
-## Use the app!
+## Use the app
 
 Check out the app [here](https://movie-loco.herokuapp.com/)
 
