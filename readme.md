@@ -19,6 +19,7 @@ The movie locations app is serving people to find the locations where their favo
 
 Check out the app [here](https://movie-loco.herokuapp.com/)
 <br/>
+<br/>
 [![Go To MovieLoco](https://github.com/aycetiner/movie-loco/blob/main/static/images/go-to-app.png)](https://movie-loco.herokuapp.com/)
 
 ## Built With
