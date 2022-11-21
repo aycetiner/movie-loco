@@ -62,7 +62,7 @@ background-position: center;
               </div>
             </div>
             <!-- Thumbs up button when user is logged in  -->
-            {% if post.user_id != g.user.id and g.user %}
+            {% if post.user_id != g.user.id and g.user.id %}
             <form
               method="POST"
               action="/users/add_like/{{ post.id }}"
