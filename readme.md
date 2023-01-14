@@ -70,7 +70,7 @@ If you have any feedback, please reach out to me at aycetiner@gmail.com
 
 ## License
 
-[![MIT License][License-img]](https://github.com/aycetiner/database-dj/blob/main/LICENSE)
+[![MIT License][License-img]](https://github.com/aycetiner/movie-loco/blob/main/LICENSE)
 
 [bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [bootstrap-url]: https://getbootstrap.com
