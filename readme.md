@@ -66,7 +66,7 @@ Built with Flask WTForms and SQL Alchemy additon to Python + Flask.
 
 ## Feedback
 
-If you have any feedback, please reach out to me at aycetiner@gmail.com
+If you have any feedback, please reach out to me at ayenercetiner@gmail.com
 
 ## License
 
